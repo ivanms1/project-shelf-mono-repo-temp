@@ -1,0 +1,18 @@
+query GetAllUsers {
+  user: getUsers {
+    id
+    name
+    email
+    role
+    projects {
+      id
+      title
+      preview
+      description
+      createdAt
+      siteLink
+      repoLink
+      isApproved
+    }
+  }
+}

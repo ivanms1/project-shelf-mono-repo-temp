@@ -1,0 +1,8 @@
+query UseCurrentUser {
+  currentUser: getCurrentUser {
+    id
+    name
+    email
+    role
+  }
+}

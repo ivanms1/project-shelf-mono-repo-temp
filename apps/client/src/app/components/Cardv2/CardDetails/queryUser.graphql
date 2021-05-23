@@ -1,0 +1,16 @@
+query GetUser($id: String!) {
+  user: getUser(id: $id) {
+    name
+    email
+    projects {
+      id
+      title
+      preview
+      description
+      createdAt
+      siteLink
+      repoLink
+      isApproved
+    }
+  }
+}

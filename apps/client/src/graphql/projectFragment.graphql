@@ -1,0 +1,25 @@
+fragment ProjectsResponseFragment on ProjectsResponse {
+  nextCursor
+  prevCursor
+  totalCount
+  results {
+    id
+    title
+    createdAt
+    author {
+      name
+      email
+    }
+    likes {
+      id
+    }
+    favorites {
+      id
+    }
+    preview
+    repoLink
+    siteLink
+    description
+    isApproved
+  }
+}
