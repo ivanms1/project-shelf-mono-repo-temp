@@ -29,7 +29,7 @@ function Admin() {
         <ul>
           {tabs.map((tab, index) => (
             <li key={index}>
-              <StyledNavLink to={tab.path} activeClassName='current'>
+              <StyledNavLink to={tab.path} activeClassName="current">
                 {tab.title}
               </StyledNavLink>
             </li>
@@ -37,8 +37,12 @@ function Admin() {
         </ul>
       </TabContainer>
       <Switch>
-        <PrivateRoute path='/admin/approved' component={Approved} />
-        <PrivateRoute path='/admin/not-approved' component={NotApproved} />
+        <PrivateRoute path="/admin/approved">
+          <Approved />
+        </PrivateRoute>
+        <PrivateRoute path="/admin/not-approved">
+          <NotApproved />
+        </PrivateRoute>
       </Switch>
     </Container>
   );

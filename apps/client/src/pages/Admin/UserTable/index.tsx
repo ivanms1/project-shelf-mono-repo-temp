@@ -1,28 +1,35 @@
 import React, { useMemo, useEffect } from 'react';
-import { useTable, usePagination } from 'react-table';
+import { useTable, usePagination, Column } from 'react-table';
 import { loader } from 'graphql.macro';
 import { useMutation } from '@apollo/client';
 
-import Loader from '../../../components/Loader/Loader';
+import Loader from '../../../app/components/Loader';
 
-import ProfilePic from '../../../assets/rick.png';
-import EditPic from '../../../assets/edit.png';
-import TrashPic from '../../../assets/trash.png';
+import ProfilePic from '../../../../assets/rick.png';
+import EditPic from '../../../../assets/edit.png';
+import TrashPic from '../../../../assets/trash.png';
 
 import { Styles } from './style';
 
 const UPDATE_USER_ROLE = loader('./mutationUpdateUser.graphql');
+
+interface UserTableProps {
+  data: any;
+  fetchData: (data: any) => void;
+  pageCount: any;
+  getPages: any;
+}
 
 function UserTable({
   data,
   fetchData,
   pageCount: controlledPageCount,
   getPages,
-}) {
-  const columns = useMemo(
+}: UserTableProps) {
+  const columns: Column[] = useMemo(
     () => [
       {
-        Header: <input type='checkbox'></input>,
+        Header: <input type="checkbox"></input>,
         Footer: () => `Count: ${Number(getPages)}`,
         accessor: 'check',
       },
@@ -35,21 +42,21 @@ function UserTable({
       },
       {
         Header: 'Profile',
-        accessor: (d) => (
-          <div className='profile'>
-            <div className='imgContainer'>
+        accessor: (d: any) => (
+          <div className="profile">
+            <div className="imgContainer">
               <img src={ProfilePic} alt={ProfilePic} />
             </div>
             <div>
-              <div className='name'>{d.name}</div>
-              <div className='email'>{d.email}</div>
+              <div className="name">{d.name}</div>
+              <div className="email">{d.email}</div>
             </div>
           </div>
         ),
       },
       {
         Header: 'Projects',
-        accessor: (d) => {
+        accessor: (d: any) => {
           if (d.projects.length === 0) {
             return <span>0</span>;
           } else {
@@ -60,17 +67,17 @@ function UserTable({
       {
         Header: 'Role',
         accessor: 'role',
-        Cell: (props) =>
+        Cell: (props: any) =>
           props.value === 'USER' ? (
             <button
-              className='user'
+              className="user"
               onClick={() => deleteuser(props.row.original.id, props.value)}
             >
               {props.value}
             </button>
           ) : (
             <button
-              className='admin'
+              className="admin"
               onClick={() => deleteuser(props.row.original.id, props.value)}
             >
               ADMIN
@@ -79,18 +86,18 @@ function UserTable({
       },
       {
         Header: 'User ID',
-        accessor: (d) => d.id,
+        accessor: (d: any) => d.id,
       },
       {
         Header: 'Actions',
         Cell: ({ cell }) => (
-          <div className='buttonHolder'>
+          <div className="buttonHolder">
             <button>
-              <img className='edit' src={EditPic} alt='edit-button' />
+              <img className="edit" src={EditPic} alt="edit-button" />
             </button>
 
             <button>
-              <img className='trash' src={TrashPic} alt='delete-button' />
+              <img className="trash" src={TrashPic} alt="delete-button" />
             </button>
           </div>
         ),
@@ -206,11 +213,11 @@ function UserTable({
         </table>
       </Styles>
 
-      {/* 
-        Pagination can be built however you'd like. 
+      {/*
+        Pagination can be built however you'd like.
         This is just a very basic UI implementation:
       */}
-      <div className='pagination'>
+      <div className="pagination">
         <button onClick={() => gotoPage(0)} disabled={!canPreviousPage}>
           {'<<'}
         </button>{' '}
@@ -232,7 +239,7 @@ function UserTable({
         <span>
           | Go to page:{' '}
           <input
-            type='number'
+            type="number"
             defaultValue={pageIndex + 1}
             onChange={(e) => {
               const page = e.target.value ? Number(e.target.value) - 1 : 0;

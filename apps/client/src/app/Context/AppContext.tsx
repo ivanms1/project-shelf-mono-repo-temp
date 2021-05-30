@@ -3,7 +3,6 @@ import React, {
   createContext,
   useState,
   useMemo,
-  useEffect,
   useCallback,
   useContext,
 } from 'react';
@@ -13,15 +12,19 @@ import useCurrentUser from '../components/useCurrentUser';
 
 import { TOKEN_NAME } from '../const';
 
-const Context = createContext();
+const Context = createContext<any>(null);
 
-const setToken = (token) => localStorage.setItem(TOKEN_NAME, token);
+const setToken = (token: string) => localStorage.setItem(TOKEN_NAME, token);
 
 export const getToken = () => {
   return localStorage.getItem(TOKEN_NAME) || null;
 };
 
-export function AppProvider({ children }) {
+interface AppProviderProps {
+  children: React.ReactNode;
+}
+
+export function AppProvider({ children }: AppProviderProps) {
   const [authToken, setAuthToken] = useState(getToken());
 
   const { currentUser, refetch } = useCurrentUser();
@@ -42,7 +45,7 @@ export function AppProvider({ children }) {
 
   const handleLogout = useCallback(async () => {
     setAuthToken(null);
-    setToken(null);
+    setToken('');
     await client.resetStore();
     history.replace('/login');
   }, [client, history]);

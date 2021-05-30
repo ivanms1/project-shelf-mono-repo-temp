@@ -3,10 +3,10 @@ import React from 'react';
 import { Container, PulseButton } from './style';
 
 interface ActiveProps {
-  active: boolean;
+  active?: boolean;
 }
 
-function Active({ active }: ActiveProps) {
+function Active({ active = false }: ActiveProps) {
   return (
     <Container>
       <PulseButton active={active}></PulseButton>

@@ -8,8 +8,8 @@ import Spinner from '../Spinner';
 
 import { getCurrentDate } from '../../../helpers/dateConverter';
 
-import { ReactComponent as Star } from './../../assets/Star.svg';
-import { ReactComponent as StarFill } from './../../assets/Star-Fill.svg';
+import { ReactComponent as Star } from './../../../../assets/Star.svg';
+import { ReactComponent as StarFill } from './../../../../assets/Star-Fill.svg';
 
 import {
   Container,
@@ -35,7 +35,7 @@ const getActionFavorite = (project: any, currentUser: any) => {
 
 interface CardTwoProps {
   project: any;
-  children: React.ReactNode;
+  children?: React.ReactNode;
 }
 
 function Cardtwo({ project, children }: CardTwoProps) {

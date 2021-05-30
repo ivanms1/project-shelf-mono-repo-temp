@@ -8,11 +8,11 @@ import { useAppContext } from '../../Context/AppContext';
 
 import useCurrentUser from '../useCurrentUser';
 
-import { ReactComponent as GitMerge } from '../../assets/git-merge.svg';
-import { ReactComponent as Bookmark } from '../../assets/bookmark.svg';
-import { ReactComponent as Settings } from '../../assets/settings.svg';
-import { ReactComponent as Home } from '../../assets/home.svg';
-import { ReactComponent as User } from '../../assets/user.svg';
+import { ReactComponent as GitMerge } from '../../../assets/git-merge.svg';
+import { ReactComponent as Bookmark } from '../../../assets/bookmark.svg';
+import { ReactComponent as Settings } from '../../../assets/settings.svg';
+import { ReactComponent as Home } from '../../../assets/home.svg';
+import { ReactComponent as User } from '../../../assets/user.svg';
 
 import {
   Container,

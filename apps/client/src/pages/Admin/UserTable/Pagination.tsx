@@ -9,7 +9,7 @@ function Pagination() {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [pageCount, setPageCount] = useState(0);
-  const [count, setCount] = useState(null);
+  const [count, setCount] = useState(0);
   const fetchIdRef = useRef(0);
 
   const { data: dataR = {} } = useQuery(GET_ALL_USER_QUERY);

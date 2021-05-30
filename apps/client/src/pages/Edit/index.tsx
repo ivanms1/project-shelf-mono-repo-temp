@@ -4,9 +4,9 @@ import { loader } from 'graphql.macro';
 import { useQuery, useMutation } from '@apollo/client';
 import { useParams } from 'react-router-dom';
 
-import Loader from '../../components/Loader';
-import ProjectForm from '../../components/ProjectForm';
-import PopupModal from '../../components/PopupModal/index';
+import Loader from '../../app/components/Loader';
+import ProjectForm from '../../app/components/ProjectForm';
+import PopupModal from '../../app/components/PopupModal/index';
 
 import { Overlay, Container } from './style';
 
@@ -14,7 +14,7 @@ const MUTATION_UPDATE_PROJECT = loader('./mutationUpdateProject.graphql');
 const QUERY_GET_PROJECT = loader('./queryGetProject.graphql');
 
 function Edit() {
-  const { projectId } = useParams();
+  const { projectId } = useParams<{ projectId: string }>();
   const history = useHistory();
 
   const [editValues, setEditValues] = useState(null);
@@ -47,7 +47,7 @@ function Edit() {
 
   const { project } = data;
 
-  async function editTheProject(values) {
+  async function editTheProject(values: any) {
     const res = await editProject({
       variables: {
         projectId: project.id,
@@ -57,7 +57,7 @@ function Edit() {
           siteLink: values.siteLink,
           repoLink: values.repoLink,
           description: values.description,
-          tags: values.tags.map((e) => e.value),
+          tags: values.tags.map((e: any) => e.value),
         },
       },
     });
@@ -84,7 +84,7 @@ function Edit() {
       </Container>
 
       <PopupModal
-        type='edit'
+        type="edit"
         isOpen={editModelIsOpen}
         onRequestClose={closeEditModal}
         onClick={() => editTheProject(editValues)}

@@ -1,5 +1,7 @@
 import styled, { css } from 'styled-components';
-import TextareaAutosize from 'react-textarea-autosize';
+import TextareaAutosize, {
+  TextareaAutosizeProps,
+} from 'react-textarea-autosize';
 
 export const FormContainer = styled.div`
   width: 100%;

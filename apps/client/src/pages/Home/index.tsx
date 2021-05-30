@@ -1,22 +1,20 @@
 import React from 'react';
-import { loader } from 'graphql.macro';
 import { useQuery, NetworkStatus } from '@apollo/client';
+import { loader } from 'graphql.macro';
 import { Waypoint } from 'react-waypoint';
 
-import Cardtwo from '../../components/Cardv2';
+import Cardtwo from '../../app/components/Cardv2';
 
-import Spinner from '../../components/Spinner';
-import Loader from '../../components/Loader';
+import Spinner from '../../app/components/Spinner';
+import Loader from '../../app/components/Loader';
 
-import { Approval, Container, CardContainer } from './style';
+import { Container, CardContainer } from './style';
 
-const QUERY_GET_MY_FAVORITE_PROJECTS = loader(
-  './queryGetMyFavoriteProjects.graphql'
-);
+const QUERY_WEEKLY_PROJECTS = loader('./queryGetProjects.graphql');
 
-function Favorites() {
+function Home() {
   const { data, loading, error, fetchMore, networkStatus } = useQuery(
-    QUERY_GET_MY_FAVORITE_PROJECTS,
+    QUERY_WEEKLY_PROJECTS,
     {
       variables: {
         cursor: undefined,
@@ -48,32 +46,27 @@ function Favorites() {
 
   return (
     <Container>
-      <Approval>
-        <p>
-          Favorite Projects <span>({data?.projects?.totalCount})</span>
-        </p>
-      </Approval>
+      <p>Welcome! Here are some recently submitted projects</p>
       <CardContainer>
         {networkStatus === NetworkStatus.setVariables ||
         networkStatus === NetworkStatus.refetch ||
         !data?.projects?.results?.length ? (
-          <p className='noproject'>You do not have any favorite projects yet</p>
+          <p className="noproject">No projects are currently live</p>
         ) : (
-          <>
-            {data?.projects?.results.map((project) => (
-              <Cardtwo key={project.id} project={project} />
-            ))}
-          </>
+          data?.projects?.results.map((project: any) => (
+            <Cardtwo key={project.id} project={project} />
+          ))
         )}
       </CardContainer>
       {!loading && data?.projects?.nextCursor && (
-        <Waypoint onEnter={onRefetch} bottomOffset='-20%' />
+        <Waypoint onEnter={onRefetch} bottomOffset="-20%" />
       )}
+
       {loading && data?.projects?.nextCursor && (
-        <Spinner padding={20} type='black' />
+        <Spinner padding={20} type="black" />
       )}
     </Container>
   );
 }
 
-export default Favorites;
+export default Home;

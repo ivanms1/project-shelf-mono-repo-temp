@@ -1,12 +1,11 @@
-import React from 'react';
 import Select from 'react-select';
 
 const colourStyles = {
-  indicatorSeparator: (base) => ({
+  indicatorSeparator: (base: any) => ({
     ...base,
     display: 'none',
   }),
-  menuList: (base) => ({
+  menuList: (base: any) => ({
     ...base,
     '::-webkit-scrollbar': {
       width: '5px',
@@ -22,18 +21,18 @@ const colourStyles = {
     },
     cursor: 'pointer',
   }),
-  control: (styles) => ({
+  control: (styles: any) => ({
     ...styles,
     backgroundColor: 'white',
     width: '170px',
     cursor: 'pointer',
   }),
-  menu: ({ width, ...css }) => ({
+  menu: ({ width, ...css }: any) => ({
     ...css,
     width: '170px',
     cursor: 'pointer',
   }),
-  option: (css, state) => ({
+  option: (css: any, state: any) => ({
     ...css,
     margin: '5px',
     padding: '4px 12px',
@@ -57,13 +56,13 @@ const titleStyle = {
   fontWeight: 500,
 };
 
-function SearchWithYear({ options, onChange, title = 'Year' }) {
+function SearchWithYear({ options, onChange, title = 'Year' }: any) {
   return (
     <div>
       <span style={titleStyle}>{title}</span>
       <Select
         styles={colourStyles}
-        placeholder='Any'
+        placeholder="Any"
         options={options}
         onChange={onChange}
       />

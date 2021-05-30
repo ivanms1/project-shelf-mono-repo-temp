@@ -7,8 +7,7 @@ import { useMutation } from '@apollo/client';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 
-import Loader from '../../components/Loader';
-import Button from '../../components/Button';
+import Button from '../../app/components/Button';
 
 import {
   Container,
@@ -21,12 +20,12 @@ import {
   CustomLoginCss,
 } from './style';
 
-import Rocket from '../../assets/rocket.svg';
-import { useAppContext } from '../../Context/AppContext';
+import Rocket from '../../../assets/rocket.svg';
+import { useAppContext } from '../../app/Context/AppContext';
 const MUTATION_LOGIN_USER = loader('./mutationLoginUser.graphql');
 
 const requiredError = 'This field is required';
-let validationSchema = yup.object().shape({
+const validationSchema = yup.object().shape({
   email: yup.string().required(requiredError).email('Email must be valid'),
   password: yup.string().required(requiredError),
 });
@@ -42,7 +41,7 @@ function Login() {
 
   const [loginUser, { loading }] = useMutation(MUTATION_LOGIN_USER);
 
-  const submitUserDetails = async (data) => {
+  const submitUserDetails = async (data: any) => {
     try {
       const response = await loginUser({
         variables: {
@@ -59,7 +58,7 @@ function Login() {
 
   return (
     <Container>
-      <img alt='rocket' src={Rocket}></img>
+      <img alt="rocket" src={Rocket}></img>
 
       <LoginBox>
         <Form onSubmit={handleSubmit(submitUserDetails)}>
@@ -67,26 +66,26 @@ function Login() {
 
           <InputContainer>
             <label>Email Address</label>
-            <Input name='email' placeholder='joe@don.com' ref={register} />
+            <Input name="email" placeholder="joe@don.com" ref={register} />
 
-            <ErrorMessage errors={errors} name='email' as={<ErrorText />} />
+            <ErrorMessage errors={errors} name="email" as={<ErrorText />} />
           </InputContainer>
 
           <InputContainer>
             <label>Password</label>
             <Input
-              name='password'
-              type='password'
-              placeholder='123456'
+              name="password"
+              type="password"
+              placeholder="123456"
               ref={register}
             />
 
-            <ErrorMessage errors={errors} name='password' as={<ErrorText />} />
+            <ErrorMessage errors={errors} name="password" as={<ErrorText />} />
           </InputContainer>
 
-          <RegisterLink to='/register'>Register ?</RegisterLink>
+          <RegisterLink to="/register">Register ?</RegisterLink>
 
-          <Button addCSS={CustomLoginCss} type='submit' loading={loading}>
+          <Button addCSS={CustomLoginCss} type="submit" loading={loading}>
             Login
           </Button>
         </Form>

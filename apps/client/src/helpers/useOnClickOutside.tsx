@@ -1,8 +1,8 @@
 import { useEffect } from 'react';
 
-function useOnClickOutside(ref, setVisibility) {
+function useOnClickOutside(ref: any, setVisibility: any) {
   useEffect(() => {
-    const listener = (event) => {
+    const listener = (event: Event) => {
       if (ref?.current?.contains(event?.target)) {
         return;
       }

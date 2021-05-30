@@ -1,7 +1,7 @@
 import React from 'react';
 
 import Pagination from './Pagination';
-import UserTable from './UserTable';
+import UserTable from './';
 
 function JsonData() {
   const { data, loading, pageCount, fetchData, count } = Pagination();
@@ -10,7 +10,6 @@ function JsonData() {
     <UserTable
       data={data}
       fetchData={fetchData}
-      loading={loading}
       pageCount={pageCount}
       getPages={count}
     />

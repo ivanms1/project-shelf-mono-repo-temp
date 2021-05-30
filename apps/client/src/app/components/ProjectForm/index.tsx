@@ -18,8 +18,8 @@ import useCurrentUser from '../useCurrentUser';
 import { options } from './SelectOptions';
 import { getCurrentDate } from '../../../helpers/dateConverter';
 
-import Rick from '../../assets/rick.png';
-import IMG_Social from '../../assets/social.png';
+import Rick from '../../../assets/rick.png';
+import IMG_Social from '../../../assets/social.png';
 
 import {
   FormContainer,
@@ -46,7 +46,7 @@ const EMAIL_STRING = 'https://mail.google.com/mail/?view=cm&fs=1&tf=1&to=';
 
 interface ProjectFormProps {
   onSubmit: (data: any) => void;
-  project: any;
+  project?: any;
 }
 
 function ProjectForm({ onSubmit, project }: ProjectFormProps) {
@@ -267,9 +267,9 @@ function ProjectForm({ onSubmit, project }: ProjectFormProps) {
           <TextArea
             name="description"
             placeholder="Description of the project in 50 words."
-            maxLength="150"
-            minRows="7"
-            maxRows="10"
+            maxLength={150}
+            minRows={7}
+            maxRows={10}
             ref={register({
               required: 'Description cannot be empty.',
               maxLength: {

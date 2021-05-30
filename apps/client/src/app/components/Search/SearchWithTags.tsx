@@ -1,13 +1,13 @@
 import React from 'react';
 import Select from 'react-select';
 
-const colourStyles = {
+const colourStyles: any = {
   marginTop: '10px',
-  indicatorSeparator: (base) => ({
+  indicatorSeparator: (base: any) => ({
     ...base,
     display: 'none',
   }),
-  menuList: (base) => ({
+  menuList: (base: any) => ({
     ...base,
     '::-webkit-scrollbar': {
       width: '5px',
@@ -24,19 +24,19 @@ const colourStyles = {
     },
     cursor: 'pointer',
   }),
-  control: (styles) => ({
+  control: (styles: any) => ({
     ...styles,
     backgroundColor: 'white',
     width: '380px',
     cursor: 'pointer',
   }),
-  menu: ({ width, ...css }) => ({
+  menu: ({ width, ...css }: any) => ({
     ...css,
     width: '270px',
     cursor: 'pointer',
     right: 0,
   }),
-  option: (css) => ({
+  option: (css: any) => ({
     ...css,
     margin: '5px',
     padding: '4px 12px',
@@ -56,7 +56,7 @@ const colourStyles = {
       color: 'white',
     },
   }),
-  multiValue: (styles) => {
+  multiValue: (styles: any) => {
     return {
       ...styles,
       backgroundColor: '#3db4f2',
@@ -65,7 +65,7 @@ const colourStyles = {
       paddingLeft: '5px',
     };
   },
-  multiValueLabel: (styles) => ({
+  multiValueLabel: (styles: any) => ({
     ...styles,
     color: 'white',
     fontWeight: 400,
@@ -78,42 +78,44 @@ const groupStyles = {
   justifyContent: 'space-between',
 };
 
-const groupBadgeStyles = {
-  backgroundColor: '#EBECF0',
-  borderRadius: '2em',
-  color: '#172B4D',
-  display: 'inline-block',
-  fontSize: 12,
-  fontWeight: 'normal',
-  lineHeight: '1',
-  minWidth: 1,
-  padding: '0.16666666666667em 0.5em',
-  textAlign: 'center',
-};
-
 const titleStyle = {
   color: '#516170',
   fontWeight: 500,
 };
 
-const formatGroupLabel = (data) => (
+const formatGroupLabel = (data: any) => (
   <div style={groupStyles}>
     <span>{data.label}</span>
-    <span style={groupBadgeStyles}>{data.options.length}</span>
+    <span
+      style={{
+        backgroundColor: '#EBECF0',
+        borderRadius: '2em',
+        color: '#172B4D',
+        display: 'inline-block',
+        fontSize: 12,
+        fontWeight: 'normal',
+        lineHeight: '1',
+        minWidth: 1,
+        padding: '0.16666666666667em 0.5em',
+        textAlign: 'center',
+      }}
+    >
+      {data.options.length}
+    </span>
   </div>
 );
 
-function SearchWithTags({ options, onChange, title }) {
+function SearchWithTags({ options, onChange, title }: any) {
   return (
     <div>
       <span style={titleStyle}>{title}</span>
       <Select
         styles={colourStyles}
-        placeholder='Any'
+        placeholder="Any"
         options={options}
         onChange={onChange}
         isMulti={true}
-        menuPosition='absolute'
+        menuPosition="absolute"
         formatGroupLabel={formatGroupLabel}
       />
     </div>

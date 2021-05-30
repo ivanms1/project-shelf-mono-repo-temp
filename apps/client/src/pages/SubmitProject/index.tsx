@@ -2,11 +2,11 @@ import React, { useState } from 'react';
 import { useMutation, gql } from '@apollo/client';
 import { loader } from 'graphql.macro';
 
-import ProjectForm from '../../components/ProjectForm';
-import SubmissionModal from '../../components/PopupModal/SubmissionModal';
-import Loader from '../../components/Loader';
+import ProjectForm from '../../app/components/ProjectForm';
+import SubmissionModal from '../../app/components/PopupModal/SubmissionModal';
+import Loader from '../../app/components/Loader';
 
-import useCurrentUser from '../../components/useCurrentUser';
+import useCurrentUser from '../../app/components/useCurrentUser';
 
 import { Overlay, Container } from './style';
 
@@ -59,7 +59,7 @@ function SubmitProject() {
     return <Loader />;
   }
 
-  async function submitTheProject(values) {
+  async function submitTheProject(values: any) {
     const res = await createProject({
       variables: {
         input: {
@@ -68,7 +68,7 @@ function SubmitProject() {
           siteLink: values.siteLink,
           repoLink: values.repoLink,
           description: values.description,
-          tags: values.tags.map((e) => e.value),
+          tags: values.tags.map((e: any) => e.value),
         },
       },
     });

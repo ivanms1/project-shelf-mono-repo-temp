@@ -42,7 +42,7 @@ export const DetailsContainer = styled.div`
   }
 `;
 
-export const ImgContainerOuter = styled.figure`
+export const ImgContainerOuter = styled.figure<{ status: boolean }>`
   border-radius: 5px;
   display: flex;
   max-width: 650px;

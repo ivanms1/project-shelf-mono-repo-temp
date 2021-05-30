@@ -4,7 +4,7 @@ import { Switch } from 'react-router-dom';
 import PublicRoute from './PublicRoute';
 import PrivateRoute from './PrivateRoute';
 
-import Loader from '../components/Loader';
+import Loader from '../app/components/Loader';
 
 const Home = lazy(() => import('../pages/Home'));
 const MyProjects = lazy(() => import('../pages/MyProjects'));
@@ -17,43 +17,43 @@ const Favorites = lazy(() => import('../pages/Favorites'));
 const Error = lazy(() => import('../pages/Error'));
 const Admin = lazy(() => import('../pages/Admin'));
 const Edit = lazy(() => import('../pages/Edit'));
-const CardDetails = lazy(() => import('../components/Cardv2/CardDetails'));
+const CardDetails = lazy(() => import('../app/components/Cardv2/CardDetails'));
 
 function Routes() {
   return (
     <Suspense fallback={<Loader />}>
       <Switch>
-        <PrivateRoute exact path='/'>
+        <PrivateRoute exact path="/">
           <Home />
         </PrivateRoute>
-        <PrivateRoute path='/contact'>
+        <PrivateRoute path="/contact">
           <Contact />
         </PrivateRoute>
-        <PublicRoute path='/register'>
+        <PublicRoute path="/register">
           <Register />
         </PublicRoute>
-        <PublicRoute path='/login'>
+        <PublicRoute path="/login">
           <Login />
         </PublicRoute>
-        <PrivateRoute isForAdmin='true' path='/admin'>
+        <PrivateRoute isForAdmin path="/admin">
           <Admin />
         </PrivateRoute>
-        <PrivateRoute path='/logout'>
+        <PrivateRoute path="/logout">
           <Logout />
         </PrivateRoute>
-        <PrivateRoute path='/edit/:projectId'>
+        <PrivateRoute path="/edit/:projectId">
           <Edit />
         </PrivateRoute>
-        <PrivateRoute path='/submit'>
+        <PrivateRoute path="/submit">
           <Submitproject />
         </PrivateRoute>
-        <PrivateRoute path='/my-projects'>
+        <PrivateRoute path="/my-projects">
           <MyProjects />
         </PrivateRoute>
-        <PrivateRoute path='/favorites'>
+        <PrivateRoute path="/favorites">
           <Favorites />
         </PrivateRoute>
-        <PrivateRoute path='/projectDetails/:projectId'>
+        <PrivateRoute path="/projectDetails/:projectId">
           <CardDetails />
         </PrivateRoute>
         <PublicRoute>
