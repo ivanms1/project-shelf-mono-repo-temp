@@ -8,7 +8,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 
 import Button from '../../app/components/Button';
 
-import Light from '../../../assets/light.svg';
+import Light from '../../assets/light.svg';
 
 import {
   Container,

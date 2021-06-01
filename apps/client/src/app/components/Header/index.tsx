@@ -168,6 +168,7 @@ function Header() {
               </Icon>
             </MenuButton>
           )}
+          // @ts-expect-error figure out later
           options={popperOptions}
         >
           <DropdownContainer>

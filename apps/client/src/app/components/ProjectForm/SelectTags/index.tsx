@@ -2,7 +2,7 @@ import React from 'react';
 import Select from 'react-select';
 
 const colourStyles = {
-  placeholder: (styles) => ({
+  placeholder: (styles: any) => ({
     ...styles,
     color: '#000',
     fontSize: ' 14px',
@@ -10,11 +10,11 @@ const colourStyles = {
     letterSpacing: '1.1px',
     fontFamily: "-apple-system, system-ui, BlinkMacSystemFont, 'Segoe UI'",
   }),
-  indicatorSeparator: (base) => ({
+  indicatorSeparator: (base: any) => ({
     ...base,
     display: 'none',
   }),
-  menuList: (base) => ({
+  menuList: (base: any) => ({
     ...base,
     '::-webkit-scrollbar': {
       width: '5px',
@@ -32,17 +32,17 @@ const colourStyles = {
     cursor: 'pointer',
     color: 'red',
   }),
-  control: (styles) => ({
+  control: (styles: any) => ({
     ...styles,
     backgroundColor: 'white',
     cursor: 'pointer',
     paddingLeft: '10px',
   }),
-  menu: ({ width, ...css }) => ({
+  menu: ({ width, ...css }: any) => ({
     ...css,
     width: '100%',
   }),
-  option: (css) => ({
+  option: (css: any) => ({
     ...css,
     padding: '4px 12px',
     cursor: 'pointer',
@@ -60,7 +60,7 @@ const colourStyles = {
       color: 'white',
     },
   }),
-  multiValue: (styles) => {
+  multiValue: (styles: any) => {
     return {
       ...styles,
       backgroundColor: '#3db4f2',
@@ -69,7 +69,7 @@ const colourStyles = {
       paddingLeft: '5px',
     };
   },
-  multiValueLabel: (styles) => ({
+  multiValueLabel: (styles: any) => ({
     ...styles,
     color: 'white',
     fontWeight: 400,

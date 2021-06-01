@@ -20,8 +20,9 @@ import {
   CustomLoginCss,
 } from './style';
 
-import Rocket from '../../../assets/rocket.svg';
+import Rocket from '../../assets/rocket.svg';
 import { useAppContext } from '../../app/Context/AppContext';
+
 const MUTATION_LOGIN_USER = loader('./mutationLoginUser.graphql');
 
 const requiredError = 'This field is required';

@@ -14,7 +14,12 @@ import {
   CustomDone,
 } from './SubmissionStyle';
 
-const SubmissionModal = ({ isOpen, onRequestClose }) => {
+interface SubmissionModalProps {
+  isOpen: boolean;
+  onRequestClose: () => void;
+}
+
+const SubmissionModal = ({ isOpen, onRequestClose }: SubmissionModalProps) => {
   const history = useHistory();
 
   return (

@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-const getColor = (props) => {
+const getColor = (props: any) => {
   if (props.isDragAccept) {
     return '#00e676';
   }

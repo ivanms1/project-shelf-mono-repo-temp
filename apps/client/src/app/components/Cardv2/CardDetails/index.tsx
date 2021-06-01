@@ -13,9 +13,9 @@ import useCurrentUser from '../../useCurrentUser';
 
 import { getCurrentDate } from '../../../..//helpers/dateConverter';
 
-import { ReactComponent as Github } from '../../../../../assets/github.svg';
-import { ReactComponent as Email } from '../../../../../assets/email.svg';
-import { ReactComponent as Web } from '../../../../../assets/web.svg';
+import { ReactComponent as Github } from '../../../../assets/github.svg';
+import { ReactComponent as Email } from '../../../../assets/email.svg';
+import { ReactComponent as Web } from '../../../../assets/web.svg';
 
 import {
   Container,

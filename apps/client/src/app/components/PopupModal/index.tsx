@@ -82,11 +82,7 @@ function ModalStyle({
         </Description>
 
         <ButtonContainer>
-          <Button
-            border={type}
-            addCSS={CustomNoButton}
-            onClick={onRequestClose}
-          >
+          <Button addCSS={CustomNoButton} onClick={onRequestClose}>
             {MODAL_MESSAGES[type].button_text_NO}
           </Button>
 

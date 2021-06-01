@@ -30,7 +30,7 @@ const customStyles = {
 interface MobileSideMenuProps {
   isOpen: boolean;
   onRequestClose: () => void;
-  onClick: () => void | null;
+  onClick?: () => void | null;
 }
 
 function MobileSideMenu({

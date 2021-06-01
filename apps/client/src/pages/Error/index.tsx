@@ -1,6 +1,6 @@
 import React from 'react';
 
-import error from '../../../assets/error.png';
+import error from '../../assets/error.png';
 
 import { Container } from './style';
 

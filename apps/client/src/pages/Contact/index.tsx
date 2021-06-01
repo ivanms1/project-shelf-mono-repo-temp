@@ -3,7 +3,7 @@ import React from 'react';
 import Footer from '../../app/components/Footer';
 import Button from '../../app/components/Button';
 
-import Kathmandu from '../../../assets/kathmandu.svg';
+import Kathmandu from '../../assets/kathmandu.svg';
 
 import {
   Container,

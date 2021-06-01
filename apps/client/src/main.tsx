@@ -8,8 +8,6 @@ import { AppProvider } from './app/Context/AppContext';
 
 import { client } from './apollo';
 
-import './index.css';
-
 ReactDOM.render(
   <React.StrictMode>
     <ApolloProvider client={client}>
