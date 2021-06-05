@@ -4,6 +4,8 @@ import * as express from 'express';
 import { db } from './db';
 import { schema } from './schema';
 
+const PORT = 3333;
+
 const apollo = new ApolloServer({
   schema,
   context: ({ req }) => {
@@ -22,11 +24,11 @@ app.use(express.json({ type: 'application/json', limit: '50mb' }));
 apollo.applyMiddleware({
   app,
   cors: {
-    origin: 'http://localhost:3000',
+    origin: 'http://localhost:4200',
     credentials: true,
   },
 });
 
-app.listen(4000, () => {
-  console.log(`🚀 GraphQL service ready at http://localhost:4000/graphql`);
+app.listen(PORT, () => {
+  console.log(`🚀 GraphQL service ready at http://localhost:${PORT}/graphql`);
 });

@@ -151,6 +151,7 @@ export const UpdateUser = extendType({
           where: {
             id: args.userId,
           },
+          // @ts-expect-error fix later
           data: args.input,
         });
 

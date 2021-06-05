@@ -465,6 +465,7 @@ export const UpdateProject = extendType({
         const { tags, ...rest } = input;
 
         return ctx.db.project.update({
+          where: { id: projectId },
           data: {
             ...rest,
             isApproved: false,

@@ -20,6 +20,7 @@ function Popper({ children, reference, options }: PopperProps) {
   const { styles, attributes } = usePopper(
     referenceRef.current,
     popperRef.current,
+    // @ts-expect-error fix later
     options
   );
 
