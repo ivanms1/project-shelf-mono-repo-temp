@@ -315,7 +315,7 @@ export interface NexusGenArgTypes {
       isApproved: boolean; // Boolean!
     }
     getUser: { // args
-      userId: string; // ID!
+      id: string; // ID!
     }
   }
 }

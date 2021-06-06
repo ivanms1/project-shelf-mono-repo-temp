@@ -89,7 +89,7 @@ type Query {
 
   """Admin query to get projects"""
   getProjectsAdmin(cursor: String, isApproved: Boolean! = true): ProjectsResponse!
-  getUser(userId: ID!): User
+  getUser(id: ID!): User
   getUsers: [User]!
 }
 

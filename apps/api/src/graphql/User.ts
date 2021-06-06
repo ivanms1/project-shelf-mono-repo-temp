@@ -40,7 +40,7 @@ export const GetUser = extendType({
   definition(t) {
     t.field('getUser', {
       type: 'User',
-      args: { userId: nonNull(idArg()) },
+      args: { id: nonNull(idArg()) },
       resolve(_root, args, ctx) {
         return ctx.db.user.findUnique({
           where: {

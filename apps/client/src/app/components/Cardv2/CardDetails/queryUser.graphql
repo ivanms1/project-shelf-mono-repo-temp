@@ -1,4 +1,4 @@
-query GetUser($id: String!) {
+query GetUserCard($id: ID!) {
   user: getUser(id: $id) {
     name
     email

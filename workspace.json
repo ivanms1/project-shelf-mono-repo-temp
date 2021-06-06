@@ -25,6 +25,18 @@
       "root": "apps/client",
       "sourceRoot": "apps/client/src",
       "projectType": "application",
+      "architect": {
+        "generate": {
+          "builder": "@nrwl/workspace:run-commands",
+          "options": {
+            "commands": [
+              {
+                "command": "npx graphql-codegen --config apps/client/codegen.yml"
+              }
+            ]
+          }
+        }
+      },
       "targets": {
         "build": {
           "executor": "@nrwl/web:build",
