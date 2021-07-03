@@ -13,18 +13,18 @@ import {
 export const Project = objectType({
   name: 'Project',
   definition(t) {
-    t.id('id');
-    t.string('title');
-    t.string('preview');
-    t.string('repoLink');
-    t.string('siteLink');
-    t.string('description');
-    t.boolean('isApproved');
-    t.field('createdAt', { type: 'DateTime' });
-    t.list.string('tags');
-    t.field('author', { type: 'User' });
-    t.list.field('likes', { type: 'User' });
-    t.list.field('favorites', { type: 'User' });
+    t.nonNull.id('id');
+    t.nonNull.string('title');
+    t.nonNull.string('preview');
+    t.nonNull.string('repoLink');
+    t.nonNull.string('siteLink');
+    t.nonNull.string('description');
+    t.nonNull.boolean('isApproved');
+    t.nonNull.field('createdAt', { type: 'DateTime' });
+    t.nonNull.list.string('tags');
+    t.nonNull.field('author', { type: 'User' });
+    t.nonNull.list.field('likes', { type: 'User' });
+    t.nonNull.list.field('favorites', { type: 'User' });
   },
 });
 

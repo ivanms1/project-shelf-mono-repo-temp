@@ -1,12 +1,15 @@
-import React from 'react';
-import { useQuery, useMutation, NetworkStatus, gql } from '@apollo/client';
+import { NetworkStatus, gql } from '@apollo/client';
 import { Waypoint } from 'react-waypoint';
-import { loader } from 'graphql.macro';
 
 import Cardtwo from '../../../app/components/Cardv2';
 import Button from '../../../app/components/Button';
 import Spinner from '../../../app/components/Spinner';
 import Loader from '../../../app/components/Loader';
+
+import {
+  useGetAllDissaprovedPojectsQuery,
+  useUpdateStatusMutation,
+} from '../../../generated/generated';
 
 import {
   Container,
@@ -15,82 +18,75 @@ import {
   customCss,
 } from './style';
 
-const QUERY_GET_ALL_NOT_APPROVED_PROJECTS = loader(
-  './queryGetAllNotApprovedProjects.graphql'
-);
-const MUTATION_UPDATE_PROJECT_STATUS = loader(
-  './mutationUpdateProjectStatus.graphql'
-);
-
 function NotApproved() {
-  const { data, loading, error, fetchMore, networkStatus } = useQuery(
-    QUERY_GET_ALL_NOT_APPROVED_PROJECTS,
-    {
-      variables: {
-        cursor: undefined,
-      },
-      notifyOnNetworkStatusChange: true,
-      fetchPolicy: 'cache-and-network',
-    }
-  );
+  const {
+    data,
+    loading,
+    error,
+    fetchMore,
+    networkStatus,
+  } = useGetAllDissaprovedPojectsQuery({
+    variables: {
+      cursor: undefined,
+    },
+    notifyOnNetworkStatusChange: true,
+    fetchPolicy: 'cache-and-network',
+  });
 
-  const [updateStatus, { error: errorR }] = useMutation(
-    MUTATION_UPDATE_PROJECT_STATUS,
-    {
-      update(cache, { data: { updateProjectStatus } }) {
-        cache.modify({
-          fields: {
-            adminGetNotApprovedProjects(existing = {}, { readField }) {
-              return {
-                ...existing,
-                results: existing.results.filter(
-                  (p: any) => readField('id', p) !== updateProjectStatus.id
-                ),
-              };
-            },
+  const [updateStatus, { error: errorR }] = useUpdateStatusMutation({
+    update(cache, { data }) {
+      cache.modify({
+        fields: {
+          adminGetNotApprovedProjects(existing = {}, { readField }) {
+            return {
+              ...existing,
+              results: existing.results.filter(
+                (p: any) => readField('id', p) !== data?.updateProjectStatus?.id
+              ),
+            };
           },
-        });
+        },
+      });
 
-        cache.modify({
-          fields: {
-            getApprovedProjects(existing = {}, { readField }) {
-              const projectFavorited = cache.writeFragment({
-                data: updateProjectStatus,
-                fragment: gql`
-                  fragment NewProject on Project {
+      cache.modify({
+        fields: {
+          getApprovedProjects(existing = {}, { readField }) {
+            const projectFavorited = cache.writeFragment({
+              data: updateProjectStatus,
+              fragment: gql`
+                fragment NewProject on Project {
+                  id
+                  title
+                  preview
+                  description
+                  siteLink
+                  repoLink
+                  isApproved
+                  likes {
                     id
-                    title
-                    preview
-                    description
-                    siteLink
-                    repoLink
-                    isApproved
-                    likes {
-                      id
-                    }
-                    favorites {
-                      id
-                    }
-                    createdAt
                   }
-                `,
-              });
-              return {
-                ...existing,
-                results: [...existing.results, projectFavorited].sort(
-                  (a, b) =>
-                    //@ts-expect-error fix later
-                    new Date(readField('createdAt', b)) -
-                    //@ts-expect-error fix later
-                    new Date(readField('createdAt', a))
-                ),
-              };
-            },
+                  favorites {
+                    id
+                  }
+                  createdAt
+                }
+              `,
+            });
+            return {
+              ...existing,
+              results: [...existing.results, projectFavorited].sort(
+                (a, b) =>
+                  //@ts-expect-error fix later
+                  new Date(readField('createdAt', b)) -
+                  //@ts-expect-error fix later
+                  new Date(readField('createdAt', a))
+              ),
+            };
           },
-        });
-      },
-    }
-  );
+        },
+      });
+    },
+  });
 
   if (loading && !data) {
     return <Loader />;
@@ -144,18 +140,21 @@ function NotApproved() {
             !data?.projects?.results?.length ? (
               <p className="noproject">All project have been approved</p>
             ) : (
-              data?.projects?.results.map((project: any) => (
-                <Cardtwo key={project.id} project={project}>
-                  <Button
-                    kind="approve"
-                    fontSize="medium"
-                    onClick={() => updateProjectStatus(project.id)}
-                    addCSS={customCss}
-                  >
-                    Approve
-                  </Button>
-                </Cardtwo>
-              ))
+              data?.projects?.results.map(
+                (project) =>
+                  project && (
+                    <Cardtwo key={project.id} project={project}>
+                      <Button
+                        kind="approve"
+                        fontSize="medium"
+                        onClick={() => updateProjectStatus(project.id)}
+                        addCSS={customCss}
+                      >
+                        Approve
+                      </Button>
+                    </Cardtwo>
+                  )
+              )
             )}
           </ProjectCollection>
           {!loading && data?.projects?.nextCursor && (

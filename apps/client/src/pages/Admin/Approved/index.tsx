@@ -9,88 +9,90 @@ import Spinner from '../../../app/components/Spinner';
 import Loader from '../../../app/components/Loader';
 
 import {
+  useGetAllApprovedProjectsQuery,
+  useUpdateStatusMutation,
+} from '../../../generated/generated';
+
+import {
   Container,
   ActivatedContainer,
   ProjectCollection,
   customCss,
 } from './style';
 
-const QUERY_GET_ALL_APPROVED_PROJECTS = loader(
-  './queryGetAllApprovedProjects.graphql'
-);
 const MUTATION_UPDATE_PROJECT_STATUS = loader(
   './mutationUpdateProjectStatus.graphql'
 );
 
 function Activated() {
-  const { data, loading, error, fetchMore, networkStatus } = useQuery(
-    QUERY_GET_ALL_APPROVED_PROJECTS,
-    {
-      variables: {
-        cursor: undefined,
-      },
-      notifyOnNetworkStatusChange: true,
-      fetchPolicy: 'cache-and-network',
-    }
-  );
+  const {
+    data,
+    loading,
+    error,
+    fetchMore,
+    networkStatus,
+  } = useGetAllApprovedProjectsQuery({
+    variables: {
+      cursor: undefined,
+    },
+    notifyOnNetworkStatusChange: true,
+    fetchPolicy: 'cache-and-network',
+  });
 
-  const [updateStatus, { error: errorR }] = useMutation(
-    MUTATION_UPDATE_PROJECT_STATUS,
-    {
-      update(cache, { data: { updateProjectStatus } }) {
-        cache.modify({
-          fields: {
-            getApprovedProjects(existing = {}, { readField }) {
-              return {
-                ...existing,
-                results: existing.results.filter(
-                  (p: any) => readField('id', p) !== updateProjectStatus.id
-                ),
-              };
-            },
+  const [updateStatus, { error: errorR }] = useUpdateStatusMutation({
+    update(cache, { data }) {
+      cache.modify({
+        fields: {
+          getApprovedProjects(existing = {}, { readField }) {
+            return {
+              ...existing,
+              results: existing.results.filter(
+                (p: any) => readField('id', p) !== data?.updateProjectStatus?.id
+              ),
+            };
           },
-        });
+        },
+      });
 
-        cache.modify({
-          fields: {
-            adminGetNotApprovedProjects(existing = {}, { readField }) {
-              const projectNotApproved = cache.writeFragment({
-                data: updateProjectStatus,
-                fragment: gql`
-                  fragment NewProject on Project {
+      cache.modify({
+        fields: {
+          adminGetNotApprovedProjects(existing = {}, { readField }) {
+            const projectNotApproved = cache.writeFragment({
+              data: updateProjectStatus,
+              fragment: gql`
+                fragment NewProject on Project {
+                  id
+                  title
+                  preview
+                  description
+                  siteLink
+                  repoLink
+                  isApproved
+                  likes {
                     id
-                    title
-                    preview
-                    description
-                    siteLink
-                    repoLink
-                    isApproved
-                    likes {
-                      id
-                    }
-                    favorites {
-                      id
-                    }
-                    createdAt
                   }
-                `,
-              });
-              return {
-                ...existing,
-                results: [...existing.results, projectNotApproved].sort(
-                  (a, b) =>
-                    // @ts-expect-error idk how to fix this
-                    new Date(readField('createdAt', b)) -
-                    // @ts-expect-error idk how to fix this
-                    new Date(readField('createdAt', a))
-                ),
-              };
-            },
+                  favorites {
+                    id
+                  }
+                  createdAt
+                }
+              `,
+            });
+            return {
+              ...existing,
+              results: [...existing.results, projectNotApproved].sort(
+                (a, b) =>
+                  // @ts-expect-error idk how to fix this
+                  new Date(readField('createdAt', b)) -
+                  // @ts-expect-error idk how to fix this
+                  new Date(readField('createdAt', a))
+              ),
+            };
           },
-        });
-      },
-    }
-  );
+        },
+      });
+    },
+  });
 
   async function updateProjectStatus(projectId: string) {
     try {
@@ -101,7 +103,7 @@ function Activated() {
         },
       });
     } catch (error) {
-      console.log(error.message);
+      // handle error
     }
   }
 
@@ -145,18 +147,24 @@ function Activated() {
             !data?.projects?.results?.length ? (
               <p className="noproject">There are no approved projects</p>
             ) : (
-              data?.projects?.results.map((project: any) => (
-                <Cardtwo key={project.id} project={project}>
-                  <Button
-                    kind="disapprove"
-                    fontSize="medium"
-                    onClick={() => updateProjectStatus(project.id)}
-                    addCSS={customCss}
-                  >
-                    Disapprove
-                  </Button>
-                </Cardtwo>
-              ))
+              data?.projects?.results.map((project) => {
+                if (!project) {
+                  return null;
+                }
+
+                return (
+                  <Cardtwo key={project.id} project={project}>
+                    <Button
+                      kind="disapprove"
+                      fontSize="medium"
+                      onClick={() => updateProjectStatus(project.id)}
+                      addCSS={customCss}
+                    >
+                      Disapprove
+                    </Button>
+                  </Cardtwo>
+                );
+              })
             )}
           </ProjectCollection>
           {!loading && data?.projects?.nextCursor && (

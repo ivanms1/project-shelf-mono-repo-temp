@@ -119,18 +119,18 @@ export type MutationUploadImageArgs = {
 
 export type Project = {
   __typename?: 'Project';
-  author?: Maybe<User>;
-  createdAt?: Maybe<Scalars['DateTime']>;
-  description?: Maybe<Scalars['String']>;
-  favorites?: Maybe<Array<Maybe<User>>>;
-  id?: Maybe<Scalars['ID']>;
-  isApproved?: Maybe<Scalars['Boolean']>;
-  likes?: Maybe<Array<Maybe<User>>>;
-  preview?: Maybe<Scalars['String']>;
-  repoLink?: Maybe<Scalars['String']>;
-  siteLink?: Maybe<Scalars['String']>;
-  tags?: Maybe<Array<Maybe<Scalars['String']>>>;
-  title?: Maybe<Scalars['String']>;
+  author: User;
+  createdAt: Scalars['DateTime'];
+  description: Scalars['String'];
+  favorites: Array<Maybe<User>>;
+  id: Scalars['ID'];
+  isApproved: Scalars['Boolean'];
+  likes: Array<Maybe<User>>;
+  preview: Scalars['String'];
+  repoLink: Scalars['String'];
+  siteLink: Scalars['String'];
+  tags: Array<Maybe<Scalars['String']>>;
+  title: Scalars['String'];
 };
 
 /** Actions available to the user */
@@ -269,10 +269,10 @@ export type GetProjectCardQuery = (
   & { project?: Maybe<(
     { __typename?: 'Project' }
     & Pick<Project, 'id' | 'title' | 'preview' | 'repoLink' | 'siteLink' | 'description' | 'isApproved' | 'createdAt' | 'tags'>
-    & { author?: Maybe<(
+    & { author: (
       { __typename?: 'User' }
       & Pick<User, 'id' | 'name' | 'email' | 'role'>
-    )> }
+    ) }
   )> }
 );
 
@@ -303,13 +303,13 @@ export type FavoriteProjectMutationMutation = (
   & { favoriteProject?: Maybe<(
     { __typename?: 'Project' }
     & Pick<Project, 'id' | 'title' | 'preview' | 'description' | 'siteLink' | 'repoLink' | 'isApproved' | 'createdAt'>
-    & { likes?: Maybe<Array<Maybe<(
+    & { likes: Array<Maybe<(
       { __typename?: 'User' }
       & Pick<User, 'id'>
-    )>>>, favorites?: Maybe<Array<Maybe<(
+    )>>, favorites: Array<Maybe<(
       { __typename?: 'User' }
       & Pick<User, 'id'>
-    )>>> }
+    )>> }
   )> }
 );
 
@@ -323,13 +323,13 @@ export type ReactToProjectMutation = (
   & { reactToProject?: Maybe<(
     { __typename?: 'Project' }
     & Pick<Project, 'id' | 'title' | 'preview' | 'description' | 'siteLink' | 'repoLink' | 'isApproved' | 'createdAt'>
-    & { likes?: Maybe<Array<Maybe<(
+    & { likes: Array<Maybe<(
       { __typename?: 'User' }
       & Pick<User, 'id'>
-    )>>>, favorites?: Maybe<Array<Maybe<(
+    )>>, favorites: Array<Maybe<(
       { __typename?: 'User' }
       & Pick<User, 'id'>
-    )>>> }
+    )>> }
   )> }
 );
 
@@ -360,16 +360,16 @@ export type ProjectsResponseFragmentFragment = (
   & { results: Array<Maybe<(
     { __typename?: 'Project' }
     & Pick<Project, 'id' | 'title' | 'createdAt' | 'preview' | 'repoLink' | 'siteLink' | 'description' | 'isApproved'>
-    & { author?: Maybe<(
+    & { author: (
       { __typename?: 'User' }
       & Pick<User, 'name' | 'email'>
-    )>, likes?: Maybe<Array<Maybe<(
+    ), likes: Array<Maybe<(
       { __typename?: 'User' }
       & Pick<User, 'id'>
-    )>>>, favorites?: Maybe<Array<Maybe<(
+    )>>, favorites: Array<Maybe<(
       { __typename?: 'User' }
       & Pick<User, 'id'>
-    )>>> }
+    )>> }
   )>> }
 );
 
@@ -384,10 +384,10 @@ export type UpdateStatusMutation = (
   & { updateProjectStatus?: Maybe<(
     { __typename?: 'Project' }
     & Pick<Project, 'id' | 'title' | 'preview' | 'repoLink' | 'siteLink' | 'description' | 'isApproved'>
-    & { author?: Maybe<(
+    & { author: (
       { __typename?: 'User' }
       & Pick<User, 'name' | 'email'>
-    )> }
+    ) }
   )> }
 );
 
@@ -539,10 +539,10 @@ export type CreateUserProjectMutation = (
   & { createProject?: Maybe<(
     { __typename?: 'Project' }
     & Pick<Project, 'id' | 'title' | 'preview' | 'description' | 'createdAt' | 'siteLink' | 'repoLink' | 'isApproved'>
-    & { likes?: Maybe<Array<Maybe<(
+    & { likes: Array<Maybe<(
       { __typename?: 'User' }
       & Pick<User, 'id' | 'name'>
-    )>>> }
+    )>> }
   )> }
 );
 

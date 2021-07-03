@@ -182,6 +182,7 @@ export const Discord = styled.input`
   font-weight: 600;
   font-size: 15px;
   letter-spacing: 1.1px;
+  max-width: 175px;
 
   &::placeholder {
     color: #6c757d;

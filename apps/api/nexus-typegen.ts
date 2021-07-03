@@ -95,18 +95,18 @@ export interface NexusGenScalars {
 export interface NexusGenObjects {
   Mutation: {};
   Project: { // root type
-    author?: NexusGenRootTypes['User'] | null; // User
-    createdAt?: NexusGenScalars['DateTime'] | null; // DateTime
-    description?: string | null; // String
-    favorites?: Array<NexusGenRootTypes['User'] | null> | null; // [User]
-    id?: string | null; // ID
-    isApproved?: boolean | null; // Boolean
-    likes?: Array<NexusGenRootTypes['User'] | null> | null; // [User]
-    preview?: string | null; // String
-    repoLink?: string | null; // String
-    siteLink?: string | null; // String
-    tags?: Array<string | null> | null; // [String]
-    title?: string | null; // String
+    author: NexusGenRootTypes['User']; // User!
+    createdAt: NexusGenScalars['DateTime']; // DateTime!
+    description: string; // String!
+    favorites: Array<NexusGenRootTypes['User'] | null>; // [User]!
+    id: string; // ID!
+    isApproved: boolean; // Boolean!
+    likes: Array<NexusGenRootTypes['User'] | null>; // [User]!
+    preview: string; // String!
+    repoLink: string; // String!
+    siteLink: string; // String!
+    tags: Array<string | null>; // [String]!
+    title: string; // String!
   }
   ProjectsResponse: { // root type
     nextCursor?: string | null; // String
@@ -154,18 +154,18 @@ export interface NexusGenFieldTypes {
     uploadImage: NexusGenScalars['JSONObject'] | null; // JSONObject
   }
   Project: { // field return type
-    author: NexusGenRootTypes['User'] | null; // User
-    createdAt: NexusGenScalars['DateTime'] | null; // DateTime
-    description: string | null; // String
-    favorites: Array<NexusGenRootTypes['User'] | null> | null; // [User]
-    id: string | null; // ID
-    isApproved: boolean | null; // Boolean
-    likes: Array<NexusGenRootTypes['User'] | null> | null; // [User]
-    preview: string | null; // String
-    repoLink: string | null; // String
-    siteLink: string | null; // String
-    tags: Array<string | null> | null; // [String]
-    title: string | null; // String
+    author: NexusGenRootTypes['User']; // User!
+    createdAt: NexusGenScalars['DateTime']; // DateTime!
+    description: string; // String!
+    favorites: Array<NexusGenRootTypes['User'] | null>; // [User]!
+    id: string; // ID!
+    isApproved: boolean; // Boolean!
+    likes: Array<NexusGenRootTypes['User'] | null>; // [User]!
+    preview: string; // String!
+    repoLink: string; // String!
+    siteLink: string; // String!
+    tags: Array<string | null>; // [String]!
+    title: string; // String!
   }
   ProjectsResponse: { // field return type
     nextCursor: string | null; // String

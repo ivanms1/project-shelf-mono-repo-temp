@@ -1,5 +1,3 @@
-import React from 'react';
-
 import Footer from '../../app/components/Footer';
 import Button from '../../app/components/Button';
 
@@ -46,10 +44,7 @@ function Contact() {
               <Collection>
                 <InputContainer>
                   <label>Discord name</label>
-                  <Discord
-                    style={{ maxWidth: '175px' }}
-                    placeholder="#234567"
-                  />
+                  <Discord placeholder="#234567" />
                 </InputContainer>
 
                 <InputContainer>
@@ -68,7 +63,7 @@ function Contact() {
                 <TextArea placeholder="e.g Weekly Category : mern stack the project titled ‘MERN’ and update my new one." />
               </InputContainer>
 
-              <Button loading={true} type="submit">
+              <Button loading type="submit">
                 Send Message
               </Button>
             </RegisterBox>

@@ -1,4 +1,3 @@
-import React from 'react';
 import ReactToolTip from 'react-tooltip';
 import toast from 'react-hot-toast';
 import Zoom from 'react-medium-image-zoom';
@@ -20,6 +19,8 @@ import { getCurrentDate } from '../../../helpers/dateConverter';
 
 import Rick from '../../../assets/rick.png';
 import IMG_Social from '../../../assets/social.png';
+
+import { Project } from '../../../generated/generated';
 
 import {
   FormContainer,
@@ -44,31 +45,66 @@ const MUTATION_UPLOAD_IMAGE = loader('./mutationUploadImage.graphql');
 
 const EMAIL_STRING = 'https://mail.google.com/mail/?view=cm&fs=1&tf=1&to=';
 
+function getDefaultValues(
+  project:
+    | Pick<
+        Project,
+        | 'id'
+        | 'title'
+        | 'preview'
+        | 'description'
+        | 'repoLink'
+        | 'siteLink'
+        | 'isApproved'
+        | 'createdAt'
+        | 'tags'
+      >
+    | undefined
+) {
+  if (!project) {
+    return {
+      title: 'Recipe App',
+      preview: IMG_Social,
+      description:
+        'This was built using MERN stacks. Used cloudaniary for image hosting. Used netlify for hosting in the live server.',
+      repoLink: '',
+      siteLink: '',
+      tags: [],
+    };
+  }
+  return {
+    title: project.title,
+    preview: project.preview,
+    repoLink: project.repoLink,
+    siteLink: project.siteLink,
+    description: project.description,
+    tags: project.tags.map((tag) => ({ value: tag, label: tag })),
+  };
+}
+
 interface ProjectFormProps {
   onSubmit: (data: any) => void;
-  project?: any;
+  project?:
+    | Pick<
+        Project,
+        | 'id'
+        | 'title'
+        | 'preview'
+        | 'description'
+        | 'repoLink'
+        | 'siteLink'
+        | 'isApproved'
+        | 'createdAt'
+        | 'tags'
+      >
+    | undefined;
 }
 
 function ProjectForm({ onSubmit, project }: ProjectFormProps) {
   const { currentUser: user } = useCurrentUser();
 
-  const defaultValues = project
-    ? {
-        title: project.title,
-        preview: project.preview,
-        repoLink: project.repoLink,
-        siteLink: project.siteLink,
-        description: project.description,
-        tags: project.tags.map((tag: any) => ({ value: tag, label: tag })),
-      }
-    : {
-        title: 'Recipe App',
-        preview: IMG_Social,
-        description:
-          'This was built using MERN stacks. Used cloudaniary for image hosting. Used netlify for hosting in the live server.',
-      };
   const { register, handleSubmit, control, errors, watch } = useForm({
-    defaultValues,
+    defaultValues: getDefaultValues(project),
   });
 
   const { title, preview, repoLink, siteLink, description } = watch();

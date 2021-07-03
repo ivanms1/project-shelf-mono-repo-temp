@@ -1,7 +1,5 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { loader } from 'graphql.macro';
-import { useQuery, useMutation } from '@apollo/client';
 import { useParams } from 'react-router-dom';
 
 import Loader from '../../app/components/Loader';
@@ -9,9 +7,10 @@ import ProjectForm from '../../app/components/ProjectForm';
 import PopupModal from '../../app/components/PopupModal/index';
 
 import { Overlay, Container } from './style';
-
-const MUTATION_UPDATE_PROJECT = loader('./mutationUpdateProject.graphql');
-const QUERY_GET_PROJECT = loader('./queryGetProject.graphql');
+import {
+  useGetProjectQuery,
+  useUpdateUserProjectMutation,
+} from '../../generated/generated';
 
 function Edit() {
   const { projectId } = useParams<{ projectId: string }>();
@@ -22,16 +21,13 @@ function Edit() {
   const openEditModal = () => setEditModelIsOpen(true);
   const closeEditModal = () => setEditModelIsOpen(false);
 
-  const { data = {}, loading, error: projectError } = useQuery(
-    QUERY_GET_PROJECT,
-    {
-      variables: {
-        id: projectId,
-      },
-    }
-  );
+  const { data, loading, error: projectError } = useGetProjectQuery({
+    variables: {
+      id: projectId,
+    },
+  });
 
-  const [editProject, { error }] = useMutation(MUTATION_UPDATE_PROJECT);
+  const [editProject, { error }] = useUpdateUserProjectMutation();
 
   if (loading) {
     return <Loader />;
