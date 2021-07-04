@@ -21,7 +21,7 @@ export const Project = objectType({
     t.nonNull.string('description');
     t.nonNull.boolean('isApproved');
     t.nonNull.field('createdAt', { type: 'DateTime' });
-    t.nonNull.list.string('tags');
+    t.nonNull.list.nonNull.string('tags');
     t.nonNull.field('author', { type: 'User' });
     t.nonNull.list.field('likes', { type: 'User' });
     t.nonNull.list.field('favorites', { type: 'User' });
@@ -33,7 +33,7 @@ export const ProjectsResponse = objectType({
   definition(t) {
     t.string('nextCursor');
     t.string('prevCursor');
-    t.nonNull.list.field('results', { type: 'Project' });
+    t.nonNull.list.nonNull.field('results', { type: 'Project' });
     t.int('totalCount');
   },
 });

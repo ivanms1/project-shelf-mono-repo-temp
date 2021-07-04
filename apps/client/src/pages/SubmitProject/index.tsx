@@ -1,31 +1,30 @@
-import React, { useState } from 'react';
-import { useMutation, gql } from '@apollo/client';
-import { loader } from 'graphql.macro';
+import { useState } from 'react';
+import { gql } from '@apollo/client';
 
 import ProjectForm from '../../app/components/ProjectForm';
 import SubmissionModal from '../../app/components/PopupModal/SubmissionModal';
 import Loader from '../../app/components/Loader';
 
 import useCurrentUser from '../../app/components/useCurrentUser';
+import { useCreateUserProjectMutation } from '../../generated/generated';
 
 import { Overlay, Container } from './style';
-
-const CREATE_PROJECT_MUTATION = loader('./mutationCreateProject.graphql');
 
 function SubmitProject() {
   const { currentUser: user, loading: currentUserLoading } = useCurrentUser();
 
   const [submitModelIsOpen, setSubmitModelIsOpen] = useState(false);
+
   const openSubmitModal = () => setSubmitModelIsOpen(true);
   const closeSubmitModal = () => setSubmitModelIsOpen(false);
 
-  const [createProject] = useMutation(CREATE_PROJECT_MUTATION, {
-    update(cache, { data: { createProject } }) {
+  const [createProject] = useCreateUserProjectMutation({
+    update(cache, { data }) {
       cache.modify({
         fields: {
           getMyProjects(existing = {}) {
             const projectCreated = cache.writeFragment({
-              data: createProject,
+              data: data?.createProject,
               fragment: gql`
                 fragment NewProject on Project {
                   id
@@ -55,11 +54,7 @@ function SubmitProject() {
     },
   });
 
-  if (currentUserLoading) {
-    return <Loader />;
-  }
-
-  async function submitTheProject(values: any) {
+  const submitTheProject = async (values: any) => {
     const res = await createProject({
       variables: {
         input: {
@@ -75,6 +70,10 @@ function SubmitProject() {
     if (res?.data) {
       openSubmitModal();
     }
+  };
+
+  if (currentUserLoading) {
+    return <Loader />;
   }
 
   return (

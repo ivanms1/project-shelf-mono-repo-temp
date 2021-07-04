@@ -1,10 +1,8 @@
 import ReactToolTip from 'react-tooltip';
 import toast from 'react-hot-toast';
 import Zoom from 'react-medium-image-zoom';
-import { useForm, Controller } from 'react-hook-form';
+import { useForm, Controller, SubmitHandler } from 'react-hook-form';
 import { ErrorMessage } from '@hookform/error-message';
-import { useMutation } from '@apollo/client';
-import { loader } from 'graphql.macro';
 
 import { Dropzone } from '../DropZone';
 import SelectTags from './SelectTags';
@@ -20,7 +18,7 @@ import { getCurrentDate } from '../../../helpers/dateConverter';
 import Rick from '../../../assets/rick.png';
 import IMG_Social from '../../../assets/social.png';
 
-import { Project } from '../../../generated/generated';
+import { Project, useUploadImageMutation } from '../../../generated/generated';
 
 import {
   FormContainer,
@@ -40,8 +38,6 @@ import {
   Links,
   Profile,
 } from '../Card/style';
-
-const MUTATION_UPLOAD_IMAGE = loader('./mutationUploadImage.graphql');
 
 const EMAIL_STRING = 'https://mail.google.com/mail/?view=cm&fs=1&tf=1&to=';
 
@@ -82,6 +78,15 @@ function getDefaultValues(
   };
 }
 
+type Inputs = {
+  title: string;
+  preview: string;
+  repoLink: string;
+  siteLink: string;
+  description: string;
+  tags: { value: string; label: string }[];
+};
+
 interface ProjectFormProps {
   onSubmit: (data: any) => void;
   project?:
@@ -103,41 +108,41 @@ interface ProjectFormProps {
 function ProjectForm({ onSubmit, project }: ProjectFormProps) {
   const { currentUser: user } = useCurrentUser();
 
-  const { register, handleSubmit, control, errors, watch } = useForm({
+  const { register, handleSubmit, control, errors, watch } = useForm<Inputs>({
     defaultValues: getDefaultValues(project),
   });
 
   const { title, preview, repoLink, siteLink, description } = watch();
 
-  const [uploadImage, { loading: loadingImg }] = useMutation(
-    MUTATION_UPLOAD_IMAGE
-  );
+  const [uploadImage, { loading: loadingImg }] = useUploadImageMutation();
 
-  async function submit(values: any) {
+  const submit: SubmitHandler<Inputs> = async (values) => {
     try {
       await onSubmit(values);
     } catch (error) {
       toast.error("Couldn't create project");
     }
-  }
+  };
 
-  async function handleImage(event: any, onChange: any) {
+  const handleImage = (event: any, onChange: any) => {
     if (event.length) {
       const reader = new FileReader();
       reader.readAsDataURL(event[0]);
-      reader.onabort = () => alert('failed');
-      reader.onerror = () => console.log('error');
+      reader.onabort = () => toast.error('Oops, please try again');
+      reader.onerror = () => toast.error('Oops, please try again');
       reader.onload = async () => {
-        const res = await uploadImage({
-          variables: {
-            path: reader.result,
-          },
-        });
+        if (typeof reader.result === 'string') {
+          const res = await uploadImage({
+            variables: {
+              path: reader.result,
+            },
+          });
 
-        onChange(res?.data?.image?.url);
+          onChange(res?.data?.image?.url);
+        }
       };
     }
-  }
+  };
 
   return (
     <FormContainer>
@@ -160,7 +165,7 @@ function ProjectForm({ onSubmit, project }: ProjectFormProps) {
           <Links>
             <a href={siteLink}>Live Link</a>
             <a href={repoLink}>Repo Link</a>
-            <a href={EMAIL_STRING + user.email}>Contact</a>
+            <a href={EMAIL_STRING + user?.email}>Contact</a>
           </Links>
 
           <div className="imgContainer">
@@ -186,7 +191,7 @@ function ProjectForm({ onSubmit, project }: ProjectFormProps) {
               <img alt={Rick} src={Rick} width="100%" height="100%"></img>
             </div>
             <div className="profileDetails">
-              <p>{user.name}</p>
+              <p>{user?.name}</p>
               <p>4th weekly project</p>
             </div>
           </Profile>

@@ -58,7 +58,7 @@ type Project {
   preview: String!
   repoLink: String!
   siteLink: String!
-  tags: [String]!
+  tags: [String!]!
   title: String!
 }
 
@@ -71,7 +71,7 @@ enum ProjectAction {
 type ProjectsResponse {
   nextCursor: String
   prevCursor: String
-  results: [Project]!
+  results: [Project!]!
   totalCount: Int
 }
 

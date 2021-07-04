@@ -1,12 +1,9 @@
-import { useQuery } from '@apollo/client';
-import { loader } from 'graphql.macro';
+import { useUseCurrentUserQuery } from '../../../generated/generated';
 
 import { getToken } from '../../Context/AppContext';
 
-const QUERY_USE_CURRENT_USER = loader('./queryUseCurrentUser.graphql');
-
 function useCurrentUser() {
-  const { data, loading, error, refetch } = useQuery(QUERY_USE_CURRENT_USER, {
+  const { data, loading, error, refetch } = useUseCurrentUserQuery({
     skip: !getToken(),
   });
 

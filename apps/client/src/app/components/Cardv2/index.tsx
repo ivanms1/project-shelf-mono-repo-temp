@@ -17,24 +17,46 @@ import {
   ProjectDetails,
   ViewDetails,
 } from './style';
+import {
+  Maybe,
+  Project,
+  ProjectsResponseFragmentFragment,
+  User,
+} from '../../../generated/generated';
 
 const MUTATION_REACT_TO_PROJECT = loader('./mutationReactToProject.graphql');
 const MUTATION_FAVORITE_PROJECT = loader('./mutationFavoriteProject.graphql');
 
-const getActionLikes = (project: any, currentUser: any) => {
+type ProjectResponseType = { __typename?: 'Project' } & Pick<
+  Project,
+  | 'id'
+  | 'title'
+  | 'createdAt'
+  | 'preview'
+  | 'repoLink'
+  | 'siteLink'
+  | 'description'
+  | 'isApproved'
+> & {
+    author: { __typename?: 'User' } & Pick<User, 'name' | 'email'>;
+    likes: Array<Maybe<{ __typename?: 'User' } & Pick<User, 'id'>>>;
+    favorites: Array<Maybe<{ __typename?: 'User' } & Pick<User, 'id'>>>;
+  };
+
+const getActionLikes = (project: ProjectResponseType, currentUser: any) => {
   return project?.likes?.some((user: any) => user?.id === currentUser?.id)
     ? 'DISLIKE'
     : 'LIKE';
 };
 
-const getActionFavorite = (project: any, currentUser: any) => {
+const getActionFavorite = (project: ProjectResponseType, currentUser: any) => {
   return project?.favorites?.some((user: any) => user?.id === currentUser?.id)
     ? 'UNDO'
     : 'FAVORITE';
 };
 
 interface CardTwoProps {
-  project: any;
+  project: ProjectResponseType;
   children?: React.ReactNode;
 }
 

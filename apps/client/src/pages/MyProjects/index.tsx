@@ -1,7 +1,5 @@
-import React from 'react';
-import { loader } from 'graphql.macro';
 import { Waypoint } from 'react-waypoint';
-import { useQuery, NetworkStatus } from '@apollo/client';
+import { NetworkStatus } from '@apollo/client';
 
 import Cardtwo from '../../app/components/Cardv2';
 
@@ -9,21 +7,24 @@ import Active from '../../app/components/Active';
 import Spinner from '../../app/components/Spinner';
 import Loader from '../../app/components/Loader';
 
+import { useGetMyProjectsQuery } from '../../generated/generated';
+
 import { Container, Approval, CardContainer, ActiveContainer } from './style';
 
-const QUERY_GET_MY_PROJECTS = loader('./queryGetMyProjects.graphql');
-
 function MyProjects() {
-  const { data, loading, error, fetchMore, networkStatus } = useQuery(
-    QUERY_GET_MY_PROJECTS,
-    {
-      variables: {
-        cursor: undefined,
-      },
-      notifyOnNetworkStatusChange: true,
-      fetchPolicy: 'cache-and-network',
-    }
-  );
+  const {
+    data,
+    loading,
+    error,
+    fetchMore,
+    networkStatus,
+  } = useGetMyProjectsQuery({
+    variables: {
+      cursor: undefined,
+    },
+    notifyOnNetworkStatusChange: true,
+    fetchPolicy: 'cache-and-network',
+  });
 
   if (loading && !data) {
     return <Loader />;
@@ -69,7 +70,7 @@ function MyProjects() {
         !data?.projects?.results?.length ? (
           <p className="noproject">You do not have any projects to showcase.</p>
         ) : (
-          data?.projects?.results.map((project: any) => (
+          data?.projects?.results.map((project) => (
             <Cardtwo key={project.id} project={project} />
           ))
         )}

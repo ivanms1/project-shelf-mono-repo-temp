@@ -105,13 +105,13 @@ export interface NexusGenObjects {
     preview: string; // String!
     repoLink: string; // String!
     siteLink: string; // String!
-    tags: Array<string | null>; // [String]!
+    tags: string[]; // [String!]!
     title: string; // String!
   }
   ProjectsResponse: { // root type
     nextCursor?: string | null; // String
     prevCursor?: string | null; // String
-    results: Array<NexusGenRootTypes['Project'] | null>; // [Project]!
+    results: NexusGenRootTypes['Project'][]; // [Project!]!
     totalCount?: number | null; // Int
   }
   Query: {};
@@ -164,13 +164,13 @@ export interface NexusGenFieldTypes {
     preview: string; // String!
     repoLink: string; // String!
     siteLink: string; // String!
-    tags: Array<string | null>; // [String]!
+    tags: string[]; // [String!]!
     title: string; // String!
   }
   ProjectsResponse: { // field return type
     nextCursor: string | null; // String
     prevCursor: string | null; // String
-    results: Array<NexusGenRootTypes['Project'] | null>; // [Project]!
+    results: NexusGenRootTypes['Project'][]; // [Project!]!
     totalCount: number | null; // Int
   }
   Query: { // field return type

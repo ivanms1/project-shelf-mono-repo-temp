@@ -1,28 +1,28 @@
-import React from 'react';
-import { useQuery, NetworkStatus } from '@apollo/client';
-import { loader } from 'graphql.macro';
+import { NetworkStatus } from '@apollo/client';
 import { Waypoint } from 'react-waypoint';
 
 import Cardtwo from '../../app/components/Cardv2';
-
 import Spinner from '../../app/components/Spinner';
 import Loader from '../../app/components/Loader';
 
+import { useGetAllProjectsQuery } from '../../generated/generated';
+
 import { Container, CardContainer } from './style';
 
-const QUERY_WEEKLY_PROJECTS = loader('./queryGetProjects.graphql');
-
 function Home() {
-  const { data, loading, error, fetchMore, networkStatus } = useQuery(
-    QUERY_WEEKLY_PROJECTS,
-    {
-      variables: {
-        cursor: undefined,
-      },
-      notifyOnNetworkStatusChange: true,
-      fetchPolicy: 'cache-and-network',
-    }
-  );
+  const {
+    data,
+    loading,
+    error,
+    fetchMore,
+    networkStatus,
+  } = useGetAllProjectsQuery({
+    variables: {
+      cursor: undefined,
+    },
+    notifyOnNetworkStatusChange: true,
+    fetchPolicy: 'cache-and-network',
+  });
 
   if (loading && !data) {
     return <Loader />;
@@ -53,7 +53,7 @@ function Home() {
         !data?.projects?.results?.length ? (
           <p className="noproject">No projects are currently live</p>
         ) : (
-          data?.projects?.results.map((project: any) => (
+          data?.projects?.results.map((project) => (
             <Cardtwo key={project.id} project={project} />
           ))
         )}

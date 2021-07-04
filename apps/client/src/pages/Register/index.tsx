@@ -1,12 +1,12 @@
-import React from 'react';
-import { useMutation } from '@apollo/client';
-import { loader } from 'graphql.macro';
-import { useForm } from 'react-hook-form';
+import { SubmitHandler, useForm } from 'react-hook-form';
 import { ErrorMessage } from '@hookform/error-message';
-import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
 
 import Button from '../../app/components/Button';
+
+import { useAppContext } from '../../app/Context/AppContext';
+import { useRegisterUserMutation } from '../../generated/generated';
 
 import Light from '../../assets/light.svg';
 
@@ -19,9 +19,6 @@ import {
   ErrorText,
   CustomRegisterCss,
 } from './style';
-import { useAppContext } from '../../app/Context/AppContext';
-
-const MUTATION_REGISTER_USER = loader('./mutationRegisterUser.graphql');
 
 const requiredError = 'This field is required';
 const validationSchema = yup.object().shape({
@@ -41,15 +38,22 @@ const validationSchema = yup.object().shape({
     }),
 });
 
+type Inputs = {
+  email: string;
+  password: string;
+  confirmPassword: string;
+  firstName: string;
+};
+
 function Register() {
   const { handleLogin } = useAppContext();
-  const { register, handleSubmit, errors } = useForm({
+  const { register, handleSubmit, errors } = useForm<Inputs>({
     resolver: yupResolver(validationSchema),
   });
 
-  const [registerUser, { loading }] = useMutation(MUTATION_REGISTER_USER);
+  const [registerUser, { loading }] = useRegisterUserMutation();
 
-  const onSubmit = async (data: any) => {
+  const onSubmit: SubmitHandler<Inputs> = async (data) => {
     try {
       const res = await registerUser({
         variables: {
@@ -75,47 +79,28 @@ function Register() {
           <InputContainer>
             <label>First name</label>
             <Input name="firstName" placeholder="Joe" ref={register} />
-
             <ErrorMessage errors={errors} name="firstName" as={<ErrorText />} />
           </InputContainer>
-
           <InputContainer>
             <label>Email Address</label>
-            <Input name="email" placeholder="joe@don.com" ref={register} />
-
+            <Input name="email" ref={register} />
             <ErrorMessage errors={errors} name="email" as={<ErrorText />} />
           </InputContainer>
-
           <InputContainer>
             <label>Password</label>
-            <Input
-              name="password"
-              type="password"
-              placeholder="123456"
-              ref={register}
-            />
-
+            <Input name="password" type="password" ref={register} />
             <ErrorMessage errors={errors} name="password" as={<ErrorText />} />
           </InputContainer>
-
           <InputContainer>
             <label>Confirm Password</label>
-            <Input
-              name="confirmPassword"
-              type="password"
-              placeholder="123456"
-              ref={register}
-            />
-
+            <Input name="confirmPassword" type="password" ref={register} />
             <ErrorMessage
               errors={errors}
               name="confirmPassword"
               as={<ErrorText />}
             />
           </InputContainer>
-
           <LoginLink to="/login">Login?</LoginLink>
-
           <Button addCSS={CustomRegisterCss} loading={loading} type="submit">
             Register
           </Button>

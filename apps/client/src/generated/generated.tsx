@@ -129,7 +129,7 @@ export type Project = {
   preview: Scalars['String'];
   repoLink: Scalars['String'];
   siteLink: Scalars['String'];
-  tags: Array<Maybe<Scalars['String']>>;
+  tags: Array<Scalars['String']>;
   title: Scalars['String'];
 };
 
@@ -143,7 +143,7 @@ export type ProjectsResponse = {
   __typename?: 'ProjectsResponse';
   nextCursor?: Maybe<Scalars['String']>;
   prevCursor?: Maybe<Scalars['String']>;
-  results: Array<Maybe<Project>>;
+  results: Array<Project>;
   totalCount?: Maybe<Scalars['Int']>;
 };
 
@@ -357,7 +357,7 @@ export type UseCurrentUserQuery = (
 export type ProjectsResponseFragmentFragment = (
   { __typename?: 'ProjectsResponse' }
   & Pick<ProjectsResponse, 'nextCursor' | 'prevCursor' | 'totalCount'>
-  & { results: Array<Maybe<(
+  & { results: Array<(
     { __typename?: 'Project' }
     & Pick<Project, 'id' | 'title' | 'createdAt' | 'preview' | 'repoLink' | 'siteLink' | 'description' | 'isApproved'>
     & { author: (
@@ -370,7 +370,7 @@ export type ProjectsResponseFragmentFragment = (
       { __typename?: 'User' }
       & Pick<User, 'id'>
     )>> }
-  )>> }
+  )> }
 );
 
 export type UpdateStatusMutationVariables = Exact<{

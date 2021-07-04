@@ -1,6 +1,4 @@
-import React from 'react';
-import { loader } from 'graphql.macro';
-import { useQuery, NetworkStatus } from '@apollo/client';
+import { NetworkStatus } from '@apollo/client';
 import { Waypoint } from 'react-waypoint';
 
 import Cardtwo from '../../app/components/Cardv2';
@@ -8,23 +6,24 @@ import Cardtwo from '../../app/components/Cardv2';
 import Spinner from '../../app/components/Spinner';
 import Loader from '../../app/components/Loader';
 
+import { useGetMyFavoriteProjectsQuery } from '../../generated/generated';
+
 import { Approval, Container, CardContainer } from './style';
 
-const QUERY_GET_MY_FAVORITE_PROJECTS = loader(
-  './queryGetMyFavoriteProjects.graphql'
-);
-
 function Favorites() {
-  const { data, loading, error, fetchMore, networkStatus } = useQuery(
-    QUERY_GET_MY_FAVORITE_PROJECTS,
-    {
-      variables: {
-        cursor: undefined,
-      },
-      notifyOnNetworkStatusChange: true,
-      fetchPolicy: 'cache-and-network',
-    }
-  );
+  const {
+    data,
+    loading,
+    error,
+    fetchMore,
+    networkStatus,
+  } = useGetMyFavoriteProjectsQuery({
+    variables: {
+      cursor: undefined,
+    },
+    notifyOnNetworkStatusChange: true,
+    fetchPolicy: 'cache-and-network',
+  });
 
   if (loading && !data) {
     return <Loader />;
@@ -59,7 +58,7 @@ function Favorites() {
         !data?.projects?.results?.length ? (
           <p className="noproject">You do not have any favorite projects yet</p>
         ) : (
-          data?.projects?.results.map((project: any) => (
+          data?.projects?.results.map((project) => (
             <Cardtwo key={project.id} project={project} />
           ))
         )}
