@@ -1,7 +1,6 @@
 import React from 'react';
-import { useQuery, useMutation, NetworkStatus, gql } from '@apollo/client';
+import { NetworkStatus, gql } from '@apollo/client';
 import { Waypoint } from 'react-waypoint';
-import { loader } from 'graphql.macro';
 
 import Cardtwo from '../../../app/components/Cardv2';
 import Button from '../../../app/components/Button';
@@ -19,10 +18,6 @@ import {
   ProjectCollection,
   customCss,
 } from './style';
-
-const MUTATION_UPDATE_PROJECT_STATUS = loader(
-  './mutationUpdateProjectStatus.graphql'
-);
 
 function Activated() {
   const {

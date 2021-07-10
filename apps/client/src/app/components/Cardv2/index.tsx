@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import toast from 'react-hot-toast';
-import { useMutation, gql } from '@apollo/client';
-import { loader } from 'graphql.macro';
+import { gql } from '@apollo/client';
 
 import useCurrentUser from '../useCurrentUser';
 import Spinner from '../Spinner';
@@ -12,20 +11,19 @@ import { ReactComponent as Star } from '../../../assets/Star.svg';
 import { ReactComponent as StarFill } from '../../../assets/Star-Fill.svg';
 
 import {
+  Maybe,
+  Project,
+  useFavoriteProjectMutationMutation,
+  User,
+  useReactToProjectMutation,
+} from '../../../generated/generated';
+
+import {
   Container,
   CardContainerInner,
   ProjectDetails,
   ViewDetails,
 } from './style';
-import {
-  Maybe,
-  Project,
-  ProjectsResponseFragmentFragment,
-  User,
-} from '../../../generated/generated';
-
-const MUTATION_REACT_TO_PROJECT = loader('./mutationReactToProject.graphql');
-const MUTATION_FAVORITE_PROJECT = loader('./mutationFavoriteProject.graphql');
 
 type ProjectResponseType = { __typename?: 'Project' } & Pick<
   Project,
@@ -43,14 +41,20 @@ type ProjectResponseType = { __typename?: 'Project' } & Pick<
     favorites: Array<Maybe<{ __typename?: 'User' } & Pick<User, 'id'>>>;
   };
 
-const getActionLikes = (project: ProjectResponseType, currentUser: any) => {
-  return project?.likes?.some((user: any) => user?.id === currentUser?.id)
+const getActionLikes = (
+  project: ProjectResponseType,
+  currentUser: any
+): any => {
+  return project?.likes?.some((user) => user?.id === currentUser?.id)
     ? 'DISLIKE'
     : 'LIKE';
 };
 
-const getActionFavorite = (project: ProjectResponseType, currentUser: any) => {
-  return project?.favorites?.some((user: any) => user?.id === currentUser?.id)
+const getActionFavorite = (
+  project: ProjectResponseType,
+  currentUser: any
+): any => {
+  return project?.favorites?.some((user) => user?.id === currentUser?.id)
     ? 'UNDO'
     : 'FAVORITE';
 };
@@ -70,7 +74,7 @@ function Cardtwo({ project, children }: CardTwoProps) {
       variables: {
         input: {
           projectId: project?.id,
-          userId: currentUser?.id,
+          userId: currentUser?.id ?? '',
           action: getActionLikes(project, currentUser),
         },
       },
@@ -82,72 +86,66 @@ function Cardtwo({ project, children }: CardTwoProps) {
       variables: {
         input: {
           projectId: project?.id,
-          userId: currentUser?.id,
+          userId: currentUser?.id ?? '',
           action: getActionFavorite(project, currentUser),
         },
       },
     };
   };
 
-  const [reactToProject] = useMutation(
-    MUTATION_REACT_TO_PROJECT,
-    getVariablesLikes()
-  );
+  const [reactToProject] = useReactToProjectMutation(getVariablesLikes());
 
-  const [favoriteProject, { loading }] = useMutation(
-    MUTATION_FAVORITE_PROJECT,
-    {
-      ...getVariablesFavorite(),
-      update(cache, { data: { favoriteProject } }) {
-        cache.modify({
-          fields: {
-            getMyFavoriteProjects(existing = {}, { readField }) {
-              if (getActionFavorite(project, currentUser) === 'FAVORITE') {
-                const projectFavorited = cache.writeFragment({
-                  data: favoriteProject,
-                  fragment: gql`
-                    fragment NewProject on Project {
+  const [favoriteProject, { loading }] = useFavoriteProjectMutationMutation({
+    ...getVariablesFavorite(),
+    update(cache, { data }) {
+      cache.modify({
+        fields: {
+          getMyFavoriteProjects(existing = {}, { readField }) {
+            if (getActionFavorite(project, currentUser) === 'FAVORITE') {
+              const projectFavorited = cache.writeFragment({
+                data: data?.favoriteProject,
+                fragment: gql`
+                  fragment NewProject on Project {
+                    id
+                    title
+                    preview
+                    description
+                    siteLink
+                    repoLink
+                    isApproved
+                    likes {
                       id
-                      title
-                      preview
-                      description
-                      siteLink
-                      repoLink
-                      isApproved
-                      likes {
-                        id
-                      }
-                      favorites {
-                        id
-                      }
-                      createdAt
                     }
-                  `,
-                });
-                return {
-                  ...existing,
-                  results: [...existing.results, projectFavorited].sort(
-                    (a, b) =>
-                      // @ts-expect-error to fix later
-                      new Date(readField('createdAt', b)) -
-                      // @ts-expect-error to fix later
-                      new Date(readField('createdAt', a))
-                  ),
-                };
-              }
-
+                    favorites {
+                      id
+                    }
+                    createdAt
+                  }
+                `,
+              });
               return {
                 ...existing,
-                results: existing.results.filter(
-                  (p: any) => readField('id', p) !== favoriteProject.id
+                results: [...existing.results, projectFavorited].sort(
+                  (a, b) =>
+                    // @ts-expect-error to fix later
+                    new Date(readField('createdAt', b)) -
+                    // @ts-expect-error to fix later
+                    new Date(readField('createdAt', a))
                 ),
               };
-            },
+            }
+
+            return {
+              ...existing,
+              results: existing.results.filter(
+                (p: any) => readField('id', p) !== data?.favoriteProject?.id
+              ),
+            };
           },
-        });
-      },
-    }
-  );
+        },
+      });
+    },
+  });
 
   const favoriteClickHandler = async () => {
     try {

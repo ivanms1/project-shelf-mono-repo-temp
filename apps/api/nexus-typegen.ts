@@ -98,10 +98,10 @@ export interface NexusGenObjects {
     author: NexusGenRootTypes['User']; // User!
     createdAt: NexusGenScalars['DateTime']; // DateTime!
     description: string; // String!
-    favorites: Array<NexusGenRootTypes['User'] | null>; // [User]!
+    favorites?: NexusGenRootTypes['User'][] | null; // [User!]
     id: string; // ID!
     isApproved: boolean; // Boolean!
-    likes: Array<NexusGenRootTypes['User'] | null>; // [User]!
+    likes?: NexusGenRootTypes['User'][] | null; // [User!]
     preview: string; // String!
     repoLink: string; // String!
     siteLink: string; // String!
@@ -118,14 +118,14 @@ export interface NexusGenObjects {
   User: { // root type
     avatar?: string | null; // String
     discord?: string | null; // String
-    email?: string | null; // String
-    favoriteProjects?: NexusGenRootTypes['Project'] | null; // Project
+    email: string; // String!
+    favoriteProjects?: NexusGenRootTypes['Project'][] | null; // [Project!]
     github?: string | null; // String
-    id?: string | null; // ID
-    name?: string | null; // String
-    projects?: NexusGenRootTypes['Project'] | null; // Project
-    projectsLiked?: NexusGenRootTypes['Project'] | null; // Project
-    role?: string | null; // String
+    id: string; // ID!
+    name: string; // String!
+    projects?: NexusGenRootTypes['Project'][] | null; // [Project!]
+    projectsLiked?: NexusGenRootTypes['Project'][] | null; // [Project!]
+    role: string; // String!
   }
 }
 
@@ -157,10 +157,10 @@ export interface NexusGenFieldTypes {
     author: NexusGenRootTypes['User']; // User!
     createdAt: NexusGenScalars['DateTime']; // DateTime!
     description: string; // String!
-    favorites: Array<NexusGenRootTypes['User'] | null>; // [User]!
+    favorites: NexusGenRootTypes['User'][] | null; // [User!]
     id: string; // ID!
     isApproved: boolean; // Boolean!
-    likes: Array<NexusGenRootTypes['User'] | null>; // [User]!
+    likes: NexusGenRootTypes['User'][] | null; // [User!]
     preview: string; // String!
     repoLink: string; // String!
     siteLink: string; // String!
@@ -186,14 +186,14 @@ export interface NexusGenFieldTypes {
   User: { // field return type
     avatar: string | null; // String
     discord: string | null; // String
-    email: string | null; // String
-    favoriteProjects: NexusGenRootTypes['Project'] | null; // Project
+    email: string; // String!
+    favoriteProjects: NexusGenRootTypes['Project'][] | null; // [Project!]
     github: string | null; // String
-    id: string | null; // ID
-    name: string | null; // String
-    projects: NexusGenRootTypes['Project'] | null; // Project
-    projectsLiked: NexusGenRootTypes['Project'] | null; // Project
-    role: string | null; // String
+    id: string; // ID!
+    name: string; // String!
+    projects: NexusGenRootTypes['Project'][] | null; // [Project!]
+    projectsLiked: NexusGenRootTypes['Project'][] | null; // [Project!]
+    role: string; // String!
   }
 }
 

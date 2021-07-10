@@ -92,7 +92,7 @@ function NotApproved() {
     return <Loader />;
   }
 
-  if (error || errorR) {
+  if (error) {
     return <p>Sorry, something went wrong.</p>;
   }
 

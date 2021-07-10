@@ -23,8 +23,8 @@ export const Project = objectType({
     t.nonNull.field('createdAt', { type: 'DateTime' });
     t.nonNull.list.nonNull.string('tags');
     t.nonNull.field('author', { type: 'User' });
-    t.nonNull.list.field('likes', { type: 'User' });
-    t.nonNull.list.field('favorites', { type: 'User' });
+    t.list.nonNull.field('likes', { type: 'User' });
+    t.list.nonNull.field('favorites', { type: 'User' });
   },
 });
 
@@ -650,6 +650,9 @@ export const UpdateProjectStatus = extendType({
         return ctx.db.project.update({
           where: { id: args.projectId },
           data: { isApproved: args.isApproved },
+          include: {
+            author: true,
+          },
         });
       },
     });

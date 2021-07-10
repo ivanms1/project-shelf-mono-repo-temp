@@ -1,15 +1,17 @@
 import React, { useState } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
-import { loader } from 'graphql.macro';
-import { useQuery, useMutation } from '@apollo/client';
 import Zoom from 'react-medium-image-zoom';
 
 import Button from '../../Button';
-
 import Loader from '../../Loader';
 import PopupModal from '../../PopupModal';
 import Spinner from '../../Spinner';
+
 import useCurrentUser from '../../useCurrentUser';
+import {
+  useDeleteProjectMutation,
+  useGetProjectCardQuery,
+} from '../../../../generated/generated';
 
 import { getCurrentDate } from '../../../..//helpers/dateConverter';
 
@@ -28,9 +30,6 @@ import {
 } from './style';
 import 'react-medium-image-zoom/dist/styles.css';
 
-const GET_PROJECT_QUERY = loader('./queryGetProject.graphql');
-const DELETE_USER_PROJECT = loader('./mutationDeleteProject.graphql');
-
 function updateQueryCache(existing: any, readField: any, deleteId: any) {
   return {
     ...existing,
@@ -38,6 +37,14 @@ function updateQueryCache(existing: any, readField: any, deleteId: any) {
       (p: any) => readField('id', p) !== deleteId
     ),
   };
+}
+
+function generateTags(tags: string[]) {
+  return tags.map((tag) => (
+    <span key={tag} className="tag">
+      {tag}
+    </span>
+  ));
 }
 
 function CardDetails() {
@@ -51,36 +58,38 @@ function CardDetails() {
   const history = useHistory();
   const { currentUser } = useCurrentUser();
 
-  const { data, loading, error } = useQuery(GET_PROJECT_QUERY, {
+  const { data, loading, error } = useGetProjectCardQuery({
     variables: {
       id: projectId,
     },
   });
 
-  const [deleteProject] = useMutation(DELETE_USER_PROJECT, {
-    update(cache, { data: { deleteProject } }) {
+  const [deleteProject] = useDeleteProjectMutation({
+    update(cache, { data }) {
       cache.modify({
         fields: {
           getApprovedProjects: (existing = {}, { readField }) =>
-            updateQueryCache(existing, readField, deleteProject),
+            updateQueryCache(existing, readField, data?.deleteProject),
           getMyProjects: (existing = {}, { readField }) =>
-            updateQueryCache(existing, readField, deleteProject),
+            updateQueryCache(existing, readField, data?.deleteProject),
           getMyFavoriteProjects: (existing = {}, { readField }) =>
-            updateQueryCache(existing, readField, deleteProject),
+            updateQueryCache(existing, readField, data?.deleteProject),
         },
       });
     },
   });
 
-  async function deleteUserProject(projectId: string) {
-    const res = await deleteProject({
-      variables: {
-        projectId: projectId,
-      },
-    });
-    if (res?.data) {
-      closeDeleteModal();
-      history.push('/my-projects');
+  async function deleteUserProject(projectId: string | undefined) {
+    if (projectId) {
+      const res = await deleteProject({
+        variables: {
+          projectId: projectId,
+        },
+      });
+      if (res?.data) {
+        closeDeleteModal();
+        history.push('/my-projects');
+      }
     }
   }
 
@@ -92,19 +101,11 @@ function CardDetails() {
     return <Loader />;
   }
 
-  if (error) {
+  if (error || !data) {
     return <Loader />;
   }
 
   const { project } = data;
-
-  const generateTags = (tags: string[]) => {
-    return tags.map((tag) => (
-      <span key={tag} className="tag">
-        {tag}
-      </span>
-    ));
-  };
 
   return (
     <>

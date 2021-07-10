@@ -51,10 +51,10 @@ type Project {
   author: User!
   createdAt: DateTime!
   description: String!
-  favorites: [User]!
+  favorites: [User!]
   id: ID!
   isApproved: Boolean!
-  likes: [User]!
+  likes: [User!]
   preview: String!
   repoLink: String!
   siteLink: String!
@@ -120,12 +120,12 @@ input UpdateUsertInput {
 type User {
   avatar: String
   discord: String
-  email: String
-  favoriteProjects: Project
+  email: String!
+  favoriteProjects: [Project!]
   github: String
-  id: ID
-  name: String
-  projects: Project
-  projectsLiked: Project
-  role: String
+  id: ID!
+  name: String!
+  projects: [Project!]
+  projectsLiked: [Project!]
+  role: String!
 }

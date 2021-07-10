@@ -222,14 +222,14 @@ export type User = {
   __typename?: 'User';
   avatar?: Maybe<Scalars['String']>;
   discord?: Maybe<Scalars['String']>;
-  email?: Maybe<Scalars['String']>;
-  favoriteProjects?: Maybe<Project>;
+  email: Scalars['String'];
+  favoriteProjects: Array<Project>;
   github?: Maybe<Scalars['String']>;
-  id?: Maybe<Scalars['ID']>;
-  name?: Maybe<Scalars['String']>;
-  projects?: Maybe<Project>;
-  projectsLiked?: Maybe<Project>;
-  role?: Maybe<Scalars['String']>;
+  id: Scalars['ID'];
+  name: Scalars['String'];
+  projects: Array<Project>;
+  projectsLiked: Array<Project>;
+  role: Scalars['String'];
 };
 
 export type GetUserContextQueryVariables = Exact<{
@@ -242,7 +242,7 @@ export type GetUserContextQuery = (
   & { user?: Maybe<(
     { __typename?: 'User' }
     & Pick<User, 'id' | 'name' | 'email'>
-    & { projects?: Maybe<(
+    & { projects: Array<(
       { __typename?: 'Project' }
       & Pick<Project, 'id' | 'title' | 'preview' | 'createdAt' | 'description' | 'siteLink' | 'repoLink' | 'isApproved'>
     )> }
@@ -286,7 +286,7 @@ export type GetUserCardQuery = (
   & { user?: Maybe<(
     { __typename?: 'User' }
     & Pick<User, 'name' | 'email'>
-    & { projects?: Maybe<(
+    & { projects: Array<(
       { __typename?: 'Project' }
       & Pick<Project, 'id' | 'title' | 'preview' | 'description' | 'createdAt' | 'siteLink' | 'repoLink' | 'isApproved'>
     )> }

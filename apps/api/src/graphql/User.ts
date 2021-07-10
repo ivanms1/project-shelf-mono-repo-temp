@@ -10,16 +10,16 @@ import {
 export const User = objectType({
   name: 'User',
   definition(t) {
-    t.id('id');
-    t.string('name');
-    t.string('email');
+    t.nonNull.id('id');
+    t.nonNull.string('name');
+    t.nonNull.string('email');
     t.string('github');
     t.string('discord');
     t.string('avatar');
-    t.string('role');
-    t.field('projects', { type: 'Project' });
-    t.field('projectsLiked', { type: 'Project' });
-    t.field('favoriteProjects', { type: 'Project' });
+    t.nonNull.string('role');
+    t.list.nonNull.field('projects', { type: 'Project' });
+    t.list.nonNull.field('projectsLiked', { type: 'Project' });
+    t.list.nonNull.field('favoriteProjects', { type: 'Project' });
   },
 });
 
@@ -151,7 +151,6 @@ export const UpdateUser = extendType({
           where: {
             id: args.userId,
           },
-          // @ts-expect-error fix later
           data: args.input,
         });
 
