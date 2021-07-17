@@ -1,11 +1,11 @@
 import { useState } from 'react';
 import { gql } from '@apollo/client';
 
-import ProjectForm from '../../app/components/ProjectForm';
-import SubmissionModal from '../../app/components/PopupModal/SubmissionModal';
-import Loader from '../../app/components/Loader';
+import ProjectForm from '../../components/ProjectForm';
+import SubmissionModal from '../../components/PopupModal/SubmissionModal';
+import Loader from '../../components/Loader';
 
-import useCurrentUser from '../../app/components/useCurrentUser';
+import useCurrentUser from '../../components/useCurrentUser';
 import { useCreateUserProjectMutation } from '../../generated/generated';
 
 import { Overlay, Container } from './style';

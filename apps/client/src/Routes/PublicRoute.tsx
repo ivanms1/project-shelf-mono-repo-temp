@@ -1,7 +1,7 @@
 import React from 'react';
 import { Redirect, Route, RouteProps } from 'react-router-dom';
 
-import { useAppContext } from '../app/Context/AppContext';
+import { useAppContext } from '../Context/AppContext';
 
 function PublicRoutes({ path, children, ...props }: RouteProps) {
   const { isAuthenticated } = useAppContext();

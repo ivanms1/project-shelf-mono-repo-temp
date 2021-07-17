@@ -13,12 +13,12 @@ import Spinner from '../Spinner';
 import useCurrentUser from '../useCurrentUser';
 
 import { options } from './SelectOptions';
-import { getCurrentDate } from '../../../helpers/dateConverter';
+import { getCurrentDate } from '../../helpers/dateConverter';
 
-import Rick from '../../../assets/rick.png';
-import IMG_Social from '../../../assets/social.png';
+import Rick from '../../assets/rick.png';
+import IMG_Social from '../../assets/social.png';
 
-import { Project, useUploadImageMutation } from '../../../generated/generated';
+import { Project, useUploadImageMutation } from '../../generated/generated';
 
 import {
   FormContainer,

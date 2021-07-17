@@ -1,5 +1,5 @@
-import Footer from '../../app/components/Footer';
-import Button from '../../app/components/Button';
+import Footer from '../../components/Footer';
+import Button from '../../components/Button';
 
 import Kathmandu from '../../assets/kathmandu.svg';
 

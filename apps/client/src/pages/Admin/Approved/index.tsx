@@ -2,10 +2,10 @@ import React from 'react';
 import { NetworkStatus, gql } from '@apollo/client';
 import { Waypoint } from 'react-waypoint';
 
-import Cardtwo from '../../../app/components/Cardv2';
-import Button from '../../../app/components/Button';
-import Spinner from '../../../app/components/Spinner';
-import Loader from '../../../app/components/Loader';
+import Cardtwo from '../../../components/Cardv2';
+import Button from '../../../components/Button';
+import Spinner from '../../../components/Spinner';
+import Loader from '../../../components/Loader';
 
 import {
   useGetAllApprovedProjectsQuery,
@@ -31,63 +31,10 @@ function Activated() {
       cursor: undefined,
     },
     notifyOnNetworkStatusChange: true,
-    fetchPolicy: 'cache-and-network',
+    fetchPolicy: 'network-only',
   });
 
-  const [updateStatus, { error: errorR }] = useUpdateStatusMutation({
-    update(cache, { data }) {
-      cache.modify({
-        fields: {
-          getApprovedProjects(existing = {}, { readField }) {
-            return {
-              ...existing,
-              results: existing.results.filter(
-                (p: any) => readField('id', p) !== data?.updateProjectStatus?.id
-              ),
-            };
-          },
-        },
-      });
-
-      cache.modify({
-        fields: {
-          adminGetNotApprovedProjects(existing = {}, { readField }) {
-            const projectNotApproved = cache.writeFragment({
-              data: updateProjectStatus,
-              fragment: gql`
-                fragment NewProject on Project {
-                  id
-                  title
-                  preview
-                  description
-                  siteLink
-                  repoLink
-                  isApproved
-                  likes {
-                    id
-                  }
-                  favorites {
-                    id
-                  }
-                  createdAt
-                }
-              `,
-            });
-            return {
-              ...existing,
-              results: [...existing.results, projectNotApproved].sort(
-                (a, b) =>
-                  // @ts-expect-error idk how to fix this
-                  new Date(readField('createdAt', b)) -
-                  // @ts-expect-error idk how to fix this
-                  new Date(readField('createdAt', a))
-              ),
-            };
-          },
-        },
-      });
-    },
-  });
+  const [updateStatus, { error: errorR }] = useUpdateStatusMutation();
 
   async function updateProjectStatus(projectId: string) {
     try {

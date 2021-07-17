@@ -1,4 +1,4 @@
-import { useUseCurrentUserQuery } from '../../../generated/generated';
+import { useUseCurrentUserQuery } from '../../generated/generated';
 
 import { getToken } from '../../Context/AppContext';
 

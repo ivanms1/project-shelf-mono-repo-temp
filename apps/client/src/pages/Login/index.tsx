@@ -4,9 +4,9 @@ import { ErrorMessage } from '@hookform/error-message';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 
-import Button from '../../app/components/Button';
+import Button from '../../components/Button';
 
-import { useAppContext } from '../../app/Context/AppContext';
+import { useAppContext } from '../../Context/AppContext';
 import { useLoginUserMutation } from '../../generated/generated';
 
 import Rocket from '../../assets/rocket.svg';

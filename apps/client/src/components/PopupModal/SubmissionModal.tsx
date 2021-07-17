@@ -3,7 +3,7 @@ import { useHistory } from 'react-router-dom';
 
 import Button from '../Button';
 
-import { ReactComponent as BeerSVG } from '../../../assets/beer.svg';
+import { ReactComponent as BeerSVG } from '../../assets/beer.svg';
 
 import {
   StyledModal,

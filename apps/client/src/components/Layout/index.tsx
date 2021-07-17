@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Routes from '../../../Routes';
+import Routes from '../../Routes';
 import Header from '../Header';
 
 import { useAppContext } from '../../Context/AppContext';

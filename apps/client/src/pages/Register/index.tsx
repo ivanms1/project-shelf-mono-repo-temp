@@ -3,9 +3,9 @@ import { ErrorMessage } from '@hookform/error-message';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 
-import Button from '../../app/components/Button';
+import Button from '../../components/Button';
 
-import { useAppContext } from '../../app/Context/AppContext';
+import { useAppContext } from '../../Context/AppContext';
 import { useRegisterUserMutation } from '../../generated/generated';
 
 import Light from '../../assets/light.svg';
@@ -66,7 +66,7 @@ function Register() {
         handleLogin(res?.data?.signup?.userId);
       }
     } catch (error) {
-      console.log(JSON.stringify(error, null, 2));
+      // TODO: handle error
     }
   };
 

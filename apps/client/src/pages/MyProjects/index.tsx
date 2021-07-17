@@ -1,11 +1,11 @@
 import { Waypoint } from 'react-waypoint';
 import { NetworkStatus } from '@apollo/client';
 
-import Cardtwo from '../../app/components/Cardv2';
+import Cardtwo from '../../components/Cardv2';
 
-import Active from '../../app/components/Active';
-import Spinner from '../../app/components/Spinner';
-import Loader from '../../app/components/Loader';
+import Active from '../../components/Active';
+import Spinner from '../../components/Spinner';
+import Loader from '../../components/Loader';
 
 import { useGetMyProjectsQuery } from '../../generated/generated';
 

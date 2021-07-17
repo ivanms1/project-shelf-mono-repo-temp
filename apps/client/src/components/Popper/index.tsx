@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { usePopper } from 'react-popper';
 
-import useOnClickOutside from '../../../helpers/useOnClickOutside';
+import useOnClickOutside from '../../helpers/useOnClickOutside';
 
 import { Container } from './style';
 

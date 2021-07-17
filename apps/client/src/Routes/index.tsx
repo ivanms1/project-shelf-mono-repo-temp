@@ -4,7 +4,7 @@ import { Switch } from 'react-router-dom';
 import PublicRoute from './PublicRoute';
 import PrivateRoute from './PrivateRoute';
 
-import Loader from '../app/components/Loader';
+import Loader from '../components/Loader';
 
 const Home = lazy(() => import('../pages/Home'));
 const MyProjects = lazy(() => import('../pages/MyProjects'));
@@ -17,7 +17,7 @@ const Favorites = lazy(() => import('../pages/Favorites'));
 const Error = lazy(() => import('../pages/Error'));
 const Admin = lazy(() => import('../pages/Admin'));
 const Edit = lazy(() => import('../pages/Edit'));
-const CardDetails = lazy(() => import('../app/components/Cardv2/CardDetails'));
+const CardDetails = lazy(() => import('../components/Cardv2/CardDetails'));
 
 function Routes() {
   return (

@@ -5,10 +5,10 @@ import { gql } from '@apollo/client';
 import useCurrentUser from '../useCurrentUser';
 import Spinner from '../Spinner';
 
-import { getCurrentDate } from '../../../helpers/dateConverter';
+import { getCurrentDate } from '../../helpers/dateConverter';
 
-import { ReactComponent as Star } from '../../../assets/Star.svg';
-import { ReactComponent as StarFill } from '../../../assets/Star-Fill.svg';
+import { ReactComponent as Star } from '../../assets/Star.svg';
+import { ReactComponent as StarFill } from '../../assets/Star-Fill.svg';
 
 import {
   Maybe,
@@ -16,7 +16,7 @@ import {
   useFavoriteProjectMutationMutation,
   User,
   useReactToProjectMutation,
-} from '../../../generated/generated';
+} from '../../generated/generated';
 
 import {
   Container,

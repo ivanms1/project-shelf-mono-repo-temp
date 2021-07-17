@@ -1,9 +1,9 @@
 import React from 'react';
 import { Route, Redirect, RouterProps, RouteProps } from 'react-router-dom';
 
-import { useAppContext } from '../app/Context/AppContext';
+import { useAppContext } from '../Context/AppContext';
 
-import useCurrentUser from '../app/components/useCurrentUser';
+import useCurrentUser from '../components/useCurrentUser';
 
 interface PrivateRoutesProps extends RouteProps {
   isForAdmin?: boolean;

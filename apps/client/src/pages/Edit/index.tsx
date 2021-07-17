@@ -2,9 +2,9 @@ import { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
 
-import Loader from '../../app/components/Loader';
-import ProjectForm from '../../app/components/ProjectForm';
-import PopupModal from '../../app/components/PopupModal/index';
+import Loader from '../../components/Loader';
+import ProjectForm from '../../components/ProjectForm';
+import PopupModal from '../../components/PopupModal/index';
 
 import { Overlay, Container } from './style';
 import {

@@ -5,12 +5,12 @@ import { useAppContext } from '../../Context/AppContext';
 
 import useCurrentUser from '../useCurrentUser';
 
-import { ReactComponent as Home } from '../../../assets/MobileMenuSVG/home.svg';
-import { ReactComponent as User } from '../../../assets/MobileMenuSVG/user.svg';
-import { ReactComponent as Create } from '../../../assets/MobileMenuSVG/plus-circle.svg';
-import { ReactComponent as Admin } from '../../../assets/MobileMenuSVG/git-merge.svg';
-import { ReactComponent as LogOut } from '../../../assets/MobileMenuSVG/log-out.svg';
-import { ReactComponent as X } from '../../../assets/MobileMenuSVG/x.svg';
+import { ReactComponent as Home } from '../../assets/MobileMenuSVG/home.svg';
+import { ReactComponent as User } from '../../assets/MobileMenuSVG/user.svg';
+import { ReactComponent as Create } from '../../assets/MobileMenuSVG/plus-circle.svg';
+import { ReactComponent as Admin } from '../../assets/MobileMenuSVG/git-merge.svg';
+import { ReactComponent as LogOut } from '../../assets/MobileMenuSVG/log-out.svg';
+import { ReactComponent as X } from '../../assets/MobileMenuSVG/x.svg';
 
 import { StyledModal, Menu, Exit } from './style';
 
