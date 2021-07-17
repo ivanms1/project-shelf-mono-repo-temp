@@ -23,9 +23,9 @@
   "typescript.preferences.quoteStyle": "single",
   "javascript.preferences.quoteStyle": "single",
   "prettier.jsxSingleQuote": true,
-"prettier.singleQuote": true,
-"typescript.format.semicolons": "insert",
-"javascript.format.semicolons": "insert",
-"editor.formatOnSave": true,
-"editor.defaultFormatter": "esbenp.prettier-vscode"
+  "prettier.singleQuote": true,
+  "typescript.format.semicolons": "insert",
+  "javascript.format.semicolons": "insert",
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode"
 }

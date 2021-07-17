@@ -110,7 +110,6 @@
     "eslint-plugin-react-hooks": "4.2.0",
     "jest": "26.2.2",
     "prettier": "2.2.1",
-    "prisma": "^2.26.0",
     "ts-jest": "26.5.5",
     "ts-node": "~9.1.1",
     "ts-node-dev": "^1.1.6",

@@ -5,7 +5,13 @@ import {
   nonNull,
   stringArg,
   inputObjectType,
+  enumType,
 } from 'nexus';
+
+export const Role = enumType({
+  name: 'Role',
+  members: ['ADMIN', 'USER'],
+});
 
 export const User = objectType({
   name: 'User',
@@ -16,7 +22,7 @@ export const User = objectType({
     t.string('github');
     t.string('discord');
     t.string('avatar');
-    t.nonNull.string('role');
+    t.nonNull.field('role', { type: 'Role' });
     t.list.nonNull.field('projects', { type: 'Project' });
     t.list.nonNull.field('projectsLiked', { type: 'Project' });
     t.list.nonNull.field('favoriteProjects', { type: 'Project' });
@@ -31,7 +37,7 @@ export const UpdateUsertInput = inputObjectType({
     t.nonNull.string('email');
     t.nonNull.string('github');
     t.nonNull.string('discord');
-    t.nonNull.string('role');
+    t.nonNull.field('role', { type: 'Role' });
   },
 });
 
@@ -44,7 +50,7 @@ export const GetUser = extendType({
       resolve(_root, args, ctx) {
         return ctx.db.user.findUnique({
           where: {
-            id: args.userId,
+            id: args.id,
           },
         });
       },

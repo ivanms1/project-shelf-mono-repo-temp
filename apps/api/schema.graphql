@@ -99,6 +99,11 @@ input ReactToProjectInput {
   userId: ID!
 }
 
+enum Role {
+  ADMIN
+  USER
+}
+
 input UpdateProjectInput {
   description: String
   preview: String
@@ -114,7 +119,7 @@ input UpdateUsertInput {
   email: String!
   github: String!
   name: String!
-  role: String!
+  role: Role!
 }
 
 type User {
@@ -127,5 +132,5 @@ type User {
   name: String!
   projects: [Project!]
   projectsLiked: [Project!]
-  role: String!
+  role: Role!
 }

@@ -442,6 +442,9 @@ export const CreateProject = extendType({
               },
             },
           },
+          include: {
+            author: true,
+          },
         });
       },
     });
@@ -472,6 +475,9 @@ export const UpdateProject = extendType({
             tags: {
               set: tags,
             },
+          },
+          include: {
+            author: true,
           },
         });
       },

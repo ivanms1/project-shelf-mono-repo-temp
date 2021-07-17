@@ -14,12 +14,12 @@ export const UploadImage = extendType({
       },
       async resolve(_root, { path }) {
         return new Promise((resolve, reject) => {
-          imageUploader.uploader.upload(path, (err: any, res: any) => {
+          imageUploader.uploader.upload(path, (err, res) => {
             if (err) {
               reject(err);
             }
             resolve({
-              url: res!.url,
+              url: res.url,
             });
           });
         });

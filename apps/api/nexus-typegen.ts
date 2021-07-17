@@ -73,13 +73,14 @@ export interface NexusGenInputs {
     email: string; // String!
     github: string; // String!
     name: string; // String!
-    role: string; // String!
+    role: NexusGenEnums['Role']; // Role!
   }
 }
 
 export interface NexusGenEnums {
   FavoriteAction: "FAVORITE" | "UNDO"
   ProjectAction: "DISLIKE" | "LIKE"
+  Role: "ADMIN" | "USER"
 }
 
 export interface NexusGenScalars {
@@ -125,7 +126,7 @@ export interface NexusGenObjects {
     name: string; // String!
     projects?: NexusGenRootTypes['Project'][] | null; // [Project!]
     projectsLiked?: NexusGenRootTypes['Project'][] | null; // [Project!]
-    role: string; // String!
+    role: NexusGenEnums['Role']; // Role!
   }
 }
 
@@ -193,7 +194,7 @@ export interface NexusGenFieldTypes {
     name: string; // String!
     projects: NexusGenRootTypes['Project'][] | null; // [Project!]
     projectsLiked: NexusGenRootTypes['Project'][] | null; // [Project!]
-    role: string; // String!
+    role: NexusGenEnums['Role']; // Role!
   }
 }
 
@@ -251,7 +252,7 @@ export interface NexusGenFieldTypeNames {
     name: 'String'
     projects: 'Project'
     projectsLiked: 'Project'
-    role: 'String'
+    role: 'Role'
   }
 }
 
