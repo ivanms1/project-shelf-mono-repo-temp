@@ -37,10 +37,10 @@ function Admin() {
         </ul>
       </TabContainer>
       <Switch>
-        <PrivateRoute path="/admin/approved">
+        <PrivateRoute path="/admin/approved" isForAdmin>
           <Approved />
         </PrivateRoute>
-        <PrivateRoute path="/admin/not-approved">
+        <PrivateRoute path="/admin/not-approved" isForAdmin>
           <NotApproved />
         </PrivateRoute>
       </Switch>
