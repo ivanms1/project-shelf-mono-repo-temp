@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import { useMemo } from 'react';
 import { NetworkStatus } from '@apollo/client';
 import {
   useTable,
@@ -10,20 +10,48 @@ import {
 import Table from '../../../components/Table';
 
 import {
-  useGetAllApprovedProjectsQuery,
+  useGetProjectsAdminQuery,
   useUpdateStatusMutation,
 } from '../../../generated/generated';
 
 import { Container, ActivatedContainer, ProjectCollection } from './style';
 
-function Activated() {
+function UpdateStatusButton({
+  isApproved,
+  projectId,
+}: {
+  isApproved: boolean;
+  projectId: string;
+}) {
+  const [updateStatus] = useUpdateStatusMutation();
+
+  const handleUpdate = async () => {
+    try {
+      await updateStatus({
+        variables: {
+          projectId,
+          isApproved: !isApproved,
+        },
+      });
+    } catch (error) {
+      // handle error
+    }
+  };
+  return isApproved ? (
+    <button onClick={() => handleUpdate()}>dissaprove</button>
+  ) : (
+    <button onClick={() => handleUpdate()}>approve</button>
+  );
+}
+
+function Projects() {
   const {
     data,
     loading,
     error,
     fetchMore,
     networkStatus,
-  } = useGetAllApprovedProjectsQuery({
+  } = useGetProjectsAdminQuery({
     variables: {
       cursor: undefined,
     },
@@ -31,15 +59,13 @@ function Activated() {
     fetchPolicy: 'network-only',
   });
 
-  const [updateStatus, { error: errorR }] = useUpdateStatusMutation();
-
   const columns: any = useMemo(
     () => [
       { Header: 'Title', accessor: 'title' },
       {
         Header: 'Created At',
         accessor: 'createdAt',
-        Cell: function CreatedAt({
+        Cell: function Title({
           cell: { value: createdAt },
         }: {
           cell: { value: string };
@@ -50,6 +76,21 @@ function Activated() {
       {
         Header: 'Author',
         accessor: 'author.name',
+      },
+      {
+        Header: 'Status',
+        accessor: 'isApproved',
+        Cell: function Status({
+          row: { original },
+          cell: { value },
+        }: {
+          row: { original: { id: string } };
+          cell: { value: boolean };
+        }) {
+          return (
+            <UpdateStatusButton isApproved={value} projectId={original.id} />
+          );
+        },
       },
     ],
     []
@@ -69,19 +110,6 @@ function Activated() {
     useResizeColumns,
     usePagination
   );
-
-  async function updateProjectStatus(projectId: string) {
-    try {
-      await updateStatus({
-        variables: {
-          projectId: projectId,
-          isApproved: false,
-        },
-      });
-    } catch (error) {
-      // handle error
-    }
-  }
 
   const onRefetch = async () => {
     if (!data?.projects?.nextCursor) {
@@ -103,7 +131,7 @@ function Activated() {
     }
   };
 
-  if (error || errorR) {
+  if (error) {
     return <p>Sorry, something went wrong.</p>;
   }
 
@@ -111,7 +139,7 @@ function Activated() {
     <Container>
       <ActivatedContainer>
         <main>
-          <h1>Approved Projects</h1>
+          <h1>Projects</h1>
           <ProjectCollection>
             <Table
               instance={tableInstance}
@@ -125,4 +153,4 @@ function Activated() {
   );
 }
 
-export default Activated;
+export default Projects;

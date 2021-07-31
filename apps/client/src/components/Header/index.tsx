@@ -40,12 +40,11 @@ const popperOptions = {
 };
 
 function Header() {
-  const history = useHistory();
   const [modalIsOpen, setModalIsOpen] = useState(false);
 
   const { isAuthenticated, handleLogout } = useAppContext();
 
-  const { currentUser, loading, error } = useCurrentUser();
+  const { currentUser } = useCurrentUser();
 
   const tabs = {
     auth: [
@@ -64,18 +63,24 @@ function Header() {
     authAndDropdown: [
       {
         title: 'Favorites',
-        onClick: () => history.push(`/favorites`),
+        path: '/favorites',
         leftIcon: <Bookmark />,
       },
       {
         title: 'ADMIN',
-        onClick: () => history.push('/admin/not-approved'),
+        path: '/admin/projects',
+        isAdmin: true,
         leftIcon: <GitMerge />,
       },
       {
         title: 'Log Out',
         onClick: () => setModalIsOpen(true),
         leftIcon: <Settings />,
+      },
+      {
+        title: 'Profile',
+        path: '/home',
+        leftIcon: <Home />,
       },
     ],
     notAuth: [
@@ -94,22 +99,6 @@ function Header() {
 
   if (!isAuthenticated) {
     return null;
-  }
-
-  if (loading === false && !error) {
-    if (currentUser?.role !== 'ADMIN') {
-      const tabfilter = tabs.auth.filter((tab) => tab.title !== 'ADMIN');
-      const tabfilter1 = tabs.authAndDropdown.filter(
-        (tab) => tab.title !== 'ADMIN'
-      );
-      tabs.authAndDropdown = tabfilter1;
-      tabs.auth = tabfilter;
-    }
-    tabs.authAndDropdown.unshift({
-      title: 'Profile',
-      onClick: () => history.push('/home'),
-      leftIcon: <Home />,
-    });
   }
 
   return (
@@ -172,13 +161,18 @@ function Header() {
           options={popperOptions}
         >
           <DropdownContainer>
-            {tabs.authAndDropdown.map((menu) => (
-              <DropdownItem key={menu.title} onClick={menu.onClick}>
-                <Icon>{menu.leftIcon}</Icon>
+            {tabs.authAndDropdown.map((menu) => {
+              if (menu.isAdmin && currentUser?.role !== 'ADMIN') {
+                return null;
+              }
+              return (
+                <DropdownItem key={menu.title} to={menu?.path ?? ''}>
+                  <Icon>{menu.leftIcon}</Icon>
 
-                <DropDownText>{menu.title}</DropDownText>
-              </DropdownItem>
-            ))}
+                  <DropDownText>{menu.title}</DropDownText>
+                </DropdownItem>
+              );
+            })}
           </DropdownContainer>
         </Popper>
       )}

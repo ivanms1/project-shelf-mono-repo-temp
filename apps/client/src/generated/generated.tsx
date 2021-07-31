@@ -122,10 +122,10 @@ export type Project = {
   author: User;
   createdAt: Scalars['DateTime'];
   description: Scalars['String'];
-  favorites: Array<Maybe<User>>;
+  favorites?: Maybe<Array<User>>;
   id: Scalars['ID'];
   isApproved: Scalars['Boolean'];
-  likes: Array<Maybe<User>>;
+  likes?: Maybe<Array<User>>;
   preview: Scalars['String'];
   repoLink: Scalars['String'];
   siteLink: Scalars['String'];
@@ -186,7 +186,6 @@ export type QueryGetProjectArgs = {
 
 export type QueryGetProjectsAdminArgs = {
   cursor?: Maybe<Scalars['String']>;
-  isApproved?: Scalars['Boolean'];
 };
 
 
@@ -199,6 +198,11 @@ export type ReactToProjectInput = {
   projectId: Scalars['ID'];
   userId: Scalars['ID'];
 };
+
+export enum Role {
+  Admin = 'ADMIN',
+  User = 'USER'
+}
 
 export type UpdateProjectInput = {
   description?: Maybe<Scalars['String']>;
@@ -215,7 +219,7 @@ export type UpdateUsertInput = {
   email: Scalars['String'];
   github: Scalars['String'];
   name: Scalars['String'];
-  role: Scalars['String'];
+  role: Role;
 };
 
 export type User = {
@@ -223,13 +227,13 @@ export type User = {
   avatar?: Maybe<Scalars['String']>;
   discord?: Maybe<Scalars['String']>;
   email: Scalars['String'];
-  favoriteProjects: Array<Project>;
+  favoriteProjects?: Maybe<Array<Project>>;
   github?: Maybe<Scalars['String']>;
   id: Scalars['ID'];
   name: Scalars['String'];
-  projects: Array<Project>;
-  projectsLiked: Array<Project>;
-  role: Scalars['String'];
+  projects?: Maybe<Array<Project>>;
+  projectsLiked?: Maybe<Array<Project>>;
+  role: Role;
 };
 
 export type GetUserContextQueryVariables = Exact<{
@@ -242,10 +246,10 @@ export type GetUserContextQuery = (
   & { user?: Maybe<(
     { __typename?: 'User' }
     & Pick<User, 'id' | 'name' | 'email'>
-    & { projects: Array<(
+    & { projects?: Maybe<Array<(
       { __typename?: 'Project' }
       & Pick<Project, 'id' | 'title' | 'preview' | 'createdAt' | 'description' | 'siteLink' | 'repoLink' | 'isApproved'>
-    )> }
+    )>> }
   )> }
 );
 
@@ -286,10 +290,10 @@ export type GetUserCardQuery = (
   & { user?: Maybe<(
     { __typename?: 'User' }
     & Pick<User, 'name' | 'email'>
-    & { projects: Array<(
+    & { projects?: Maybe<Array<(
       { __typename?: 'Project' }
       & Pick<Project, 'id' | 'title' | 'preview' | 'description' | 'createdAt' | 'siteLink' | 'repoLink' | 'isApproved'>
-    )> }
+    )>> }
   )> }
 );
 
@@ -303,10 +307,10 @@ export type FavoriteProjectMutationMutation = (
   & { favoriteProject?: Maybe<(
     { __typename?: 'Project' }
     & Pick<Project, 'id' | 'title' | 'preview' | 'description' | 'siteLink' | 'repoLink' | 'isApproved' | 'createdAt'>
-    & { likes: Array<Maybe<(
+    & { likes?: Maybe<Array<(
       { __typename?: 'User' }
       & Pick<User, 'id'>
-    )>>, favorites: Array<Maybe<(
+    )>>, favorites?: Maybe<Array<(
       { __typename?: 'User' }
       & Pick<User, 'id'>
     )>> }
@@ -323,10 +327,10 @@ export type ReactToProjectMutation = (
   & { reactToProject?: Maybe<(
     { __typename?: 'Project' }
     & Pick<Project, 'id' | 'title' | 'preview' | 'description' | 'siteLink' | 'repoLink' | 'isApproved' | 'createdAt'>
-    & { likes: Array<Maybe<(
+    & { likes?: Maybe<Array<(
       { __typename?: 'User' }
       & Pick<User, 'id'>
-    )>>, favorites: Array<Maybe<(
+    )>>, favorites?: Maybe<Array<(
       { __typename?: 'User' }
       & Pick<User, 'id'>
     )>> }
@@ -363,10 +367,10 @@ export type ProjectsResponseFragmentFragment = (
     & { author: (
       { __typename?: 'User' }
       & Pick<User, 'name' | 'email'>
-    ), likes: Array<Maybe<(
+    ), likes?: Maybe<Array<(
       { __typename?: 'User' }
       & Pick<User, 'id'>
-    )>>, favorites: Array<Maybe<(
+    )>>, favorites?: Maybe<Array<(
       { __typename?: 'User' }
       & Pick<User, 'id'>
     )>> }
@@ -391,12 +395,12 @@ export type UpdateStatusMutation = (
   )> }
 );
 
-export type GetAllApprovedProjectsQueryVariables = Exact<{
+export type GetAllDissaprovedPojectsQueryVariables = Exact<{
   cursor?: Maybe<Scalars['String']>;
 }>;
 
 
-export type GetAllApprovedProjectsQuery = (
+export type GetAllDissaprovedPojectsQuery = (
   { __typename?: 'Query' }
   & { projects: (
     { __typename?: 'ProjectsResponse' }
@@ -404,12 +408,12 @@ export type GetAllApprovedProjectsQuery = (
   ) }
 );
 
-export type GetAllDissaprovedPojectsQueryVariables = Exact<{
+export type GetProjectsAdminQueryVariables = Exact<{
   cursor?: Maybe<Scalars['String']>;
 }>;
 
 
-export type GetAllDissaprovedPojectsQuery = (
+export type GetProjectsAdminQuery = (
   { __typename?: 'Query' }
   & { projects: (
     { __typename?: 'ProjectsResponse' }
@@ -539,7 +543,7 @@ export type CreateUserProjectMutation = (
   & { createProject?: Maybe<(
     { __typename?: 'Project' }
     & Pick<Project, 'id' | 'title' | 'preview' | 'description' | 'createdAt' | 'siteLink' | 'repoLink' | 'isApproved'>
-    & { likes: Array<Maybe<(
+    & { likes?: Maybe<Array<(
       { __typename?: 'User' }
       & Pick<User, 'id' | 'name'>
     )>> }
@@ -963,44 +967,9 @@ export function useUpdateStatusMutation(baseOptions?: Apollo.MutationHookOptions
 export type UpdateStatusMutationHookResult = ReturnType<typeof useUpdateStatusMutation>;
 export type UpdateStatusMutationResult = Apollo.MutationResult<UpdateStatusMutation>;
 export type UpdateStatusMutationOptions = Apollo.BaseMutationOptions<UpdateStatusMutation, UpdateStatusMutationVariables>;
-export const GetAllApprovedProjectsDocument = gql`
-    query GetAllApprovedProjects($cursor: String = null) {
-  projects: getApprovedProjects(cursor: $cursor) {
-    ...ProjectsResponseFragment
-  }
-}
-    ${ProjectsResponseFragmentFragmentDoc}`;
-
-/**
- * __useGetAllApprovedProjectsQuery__
- *
- * To run a query within a React component, call `useGetAllApprovedProjectsQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetAllApprovedProjectsQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGetAllApprovedProjectsQuery({
- *   variables: {
- *      cursor: // value for 'cursor'
- *   },
- * });
- */
-export function useGetAllApprovedProjectsQuery(baseOptions?: Apollo.QueryHookOptions<GetAllApprovedProjectsQuery, GetAllApprovedProjectsQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetAllApprovedProjectsQuery, GetAllApprovedProjectsQueryVariables>(GetAllApprovedProjectsDocument, options);
-      }
-export function useGetAllApprovedProjectsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetAllApprovedProjectsQuery, GetAllApprovedProjectsQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetAllApprovedProjectsQuery, GetAllApprovedProjectsQueryVariables>(GetAllApprovedProjectsDocument, options);
-        }
-export type GetAllApprovedProjectsQueryHookResult = ReturnType<typeof useGetAllApprovedProjectsQuery>;
-export type GetAllApprovedProjectsLazyQueryHookResult = ReturnType<typeof useGetAllApprovedProjectsLazyQuery>;
-export type GetAllApprovedProjectsQueryResult = Apollo.QueryResult<GetAllApprovedProjectsQuery, GetAllApprovedProjectsQueryVariables>;
 export const GetAllDissaprovedPojectsDocument = gql`
     query GetAllDissaprovedPojects($cursor: String = null) {
-  projects: getProjectsAdmin(cursor: $cursor, isApproved: false) {
+  projects: getProjectsAdmin(cursor: $cursor) {
     ...ProjectsResponseFragment
   }
 }
@@ -1033,6 +1002,41 @@ export function useGetAllDissaprovedPojectsLazyQuery(baseOptions?: Apollo.LazyQu
 export type GetAllDissaprovedPojectsQueryHookResult = ReturnType<typeof useGetAllDissaprovedPojectsQuery>;
 export type GetAllDissaprovedPojectsLazyQueryHookResult = ReturnType<typeof useGetAllDissaprovedPojectsLazyQuery>;
 export type GetAllDissaprovedPojectsQueryResult = Apollo.QueryResult<GetAllDissaprovedPojectsQuery, GetAllDissaprovedPojectsQueryVariables>;
+export const GetProjectsAdminDocument = gql`
+    query GetProjectsAdmin($cursor: String = null) {
+  projects: getProjectsAdmin(cursor: $cursor) {
+    ...ProjectsResponseFragment
+  }
+}
+    ${ProjectsResponseFragmentFragmentDoc}`;
+
+/**
+ * __useGetProjectsAdminQuery__
+ *
+ * To run a query within a React component, call `useGetProjectsAdminQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetProjectsAdminQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetProjectsAdminQuery({
+ *   variables: {
+ *      cursor: // value for 'cursor'
+ *   },
+ * });
+ */
+export function useGetProjectsAdminQuery(baseOptions?: Apollo.QueryHookOptions<GetProjectsAdminQuery, GetProjectsAdminQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetProjectsAdminQuery, GetProjectsAdminQueryVariables>(GetProjectsAdminDocument, options);
+      }
+export function useGetProjectsAdminLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetProjectsAdminQuery, GetProjectsAdminQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetProjectsAdminQuery, GetProjectsAdminQueryVariables>(GetProjectsAdminDocument, options);
+        }
+export type GetProjectsAdminQueryHookResult = ReturnType<typeof useGetProjectsAdminQuery>;
+export type GetProjectsAdminLazyQueryHookResult = ReturnType<typeof useGetProjectsAdminLazyQuery>;
+export type GetProjectsAdminQueryResult = Apollo.QueryResult<GetProjectsAdminQuery, GetProjectsAdminQueryVariables>;
 export const UpdateUserProjectDocument = gql`
     mutation UpdateUserProject($projectId: ID!, $input: UpdateProjectInput) {
   updateProject(projectId: $projectId, input: $input) {

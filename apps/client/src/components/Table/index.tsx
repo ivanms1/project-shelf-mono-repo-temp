@@ -84,11 +84,7 @@ const Table: React.FunctionComponent<TableProps> = ({
             {!loading && hasMore && (
               <Waypoint onEnter={onFetchMore} bottomOffset="-50%" />
             )}
-            {loading && (
-              <tr>
-                <Spinner />
-              </tr>
-            )}
+            {loading && <Spinner />}
           </tbody>
         )}
         {!hasPagination && (

@@ -26,7 +26,7 @@ const rotateCircleLoader = keyframes`
     }
 `;
 
-export const SpinnerDiv = styled.div<{ padding: number }>`
+export const SpinnerDiv = styled.span<{ padding: number }>`
   width: 100%;
   display: flex;
   justify-content: center;
@@ -34,7 +34,7 @@ export const SpinnerDiv = styled.div<{ padding: number }>`
   padding: ${({ padding }) => `${padding}px`} 0;
 `;
 
-export const CircularLoader = styled.div<{ colors: string }>`
+export const CircularLoader = styled.span<{ colors: string }>`
   border-radius: 50%;
   width: 25px;
   height: 25px;

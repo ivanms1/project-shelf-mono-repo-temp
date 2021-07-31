@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { NavLink } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 
 export const Container = styled.div`
   display: flex;
@@ -124,8 +124,10 @@ export const DropdownContainer = styled.div`
   }
 `;
 
-export const DropdownItem = styled.button`
+export const DropdownItem = styled(Link)`
   display: flex;
+  color: #152c5b;
+  text-decoration: none;
   flex-direction: row;
   justify-content: flex-start;
   align-items: center;

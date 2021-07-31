@@ -195,17 +195,12 @@ export const GetProjectsAdmin = extendType({
       description: 'Admin query to get projects',
       args: {
         cursor: stringArg(),
-        isApproved: nonNull(booleanArg({ default: true })),
       },
       async resolve(_root, args, ctx) {
         const incomingCursor = args?.cursor;
         let results;
 
-        const totalCount = await ctx.db.project.count({
-          where: {
-            isApproved: args.isApproved,
-          },
-        });
+        const totalCount = await ctx.db.project.count();
 
         if (incomingCursor) {
           results = await ctx.db.project.findMany({
@@ -213,9 +208,6 @@ export const GetProjectsAdmin = extendType({
             skip: 1,
             cursor: {
               id: incomingCursor,
-            },
-            where: {
-              isApproved: args.isApproved,
             },
             include: {
               likes: true,
@@ -229,9 +221,6 @@ export const GetProjectsAdmin = extendType({
         } else {
           results = await ctx.db.project.findMany({
             take: 9,
-            where: {
-              isApproved: args.isApproved,
-            },
             include: {
               likes: true,
               favorites: true,

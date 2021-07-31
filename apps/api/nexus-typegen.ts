@@ -313,7 +313,6 @@ export interface NexusGenArgTypes {
     }
     getProjectsAdmin: { // args
       cursor?: string | null; // String
-      isApproved: boolean; // Boolean!
     }
     getUser: { // args
       id: string; // ID!
