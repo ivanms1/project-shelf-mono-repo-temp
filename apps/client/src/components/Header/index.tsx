@@ -62,11 +62,6 @@ function Header() {
     ],
     authAndDropdown: [
       {
-        title: 'Favorites',
-        path: '/favorites',
-        leftIcon: <Bookmark />,
-      },
-      {
         title: 'ADMIN',
         path: '/admin/projects',
         isAdmin: true,

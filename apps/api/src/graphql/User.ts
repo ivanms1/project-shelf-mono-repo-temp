@@ -7,25 +7,25 @@ import {
   inputObjectType,
   enumType,
 } from 'nexus';
+import { User } from 'nexus-prisma';
 
 export const Role = enumType({
   name: 'Role',
   members: ['ADMIN', 'USER'],
 });
 
-export const User = objectType({
+export const UserType = objectType({
   name: 'User',
   definition(t) {
-    t.nonNull.id('id');
-    t.nonNull.string('name');
-    t.nonNull.string('email');
-    t.string('github');
-    t.string('discord');
-    t.string('avatar');
-    t.nonNull.field('role', { type: 'Role' });
+    t.field(User.id);
+    t.field(User.name);
+    t.field(User.email);
+    t.field(User.github);
+    t.field(User.discord);
+    t.field(User.avatar);
+    t.field(User.role);
     t.list.nonNull.field('projects', { type: 'Project' });
     t.list.nonNull.field('projectsLiked', { type: 'Project' });
-    t.list.nonNull.field('favoriteProjects', { type: 'Project' });
   },
 });
 

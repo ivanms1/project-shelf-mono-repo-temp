@@ -10,9 +10,6 @@ mutation ReactToProject($input: ReactToProjectInput) {
     likes {
       id
     }
-    favorites {
-      id
-    }
     createdAt
   }
 }

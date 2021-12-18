@@ -72,8 +72,6 @@ function CardDetails() {
             updateQueryCache(existing, readField, data?.deleteProject),
           getMyProjects: (existing = {}, { readField }) =>
             updateQueryCache(existing, readField, data?.deleteProject),
-          getMyFavoriteProjects: (existing = {}, { readField }) =>
-            updateQueryCache(existing, readField, data?.deleteProject),
         },
       });
     },

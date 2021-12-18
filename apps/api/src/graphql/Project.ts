@@ -9,22 +9,24 @@ import {
   list,
   enumType,
 } from 'nexus';
+import { Project } from 'nexus-prisma';
 
-export const Project = objectType({
-  name: 'Project',
+export const ProjectType = objectType({
+  name: Project.$name,
+  description: Project.$description,
   definition(t) {
-    t.nonNull.id('id');
-    t.nonNull.string('title');
-    t.nonNull.string('preview');
-    t.nonNull.string('repoLink');
-    t.nonNull.string('siteLink');
-    t.nonNull.string('description');
-    t.nonNull.boolean('isApproved');
-    t.nonNull.field('createdAt', { type: 'DateTime' });
-    t.nonNull.list.nonNull.string('tags');
-    t.nonNull.field('author', { type: 'User' });
-    t.list.nonNull.field('likes', { type: 'User' });
-    t.list.nonNull.field('favorites', { type: 'User' });
+    t.field(Project.id);
+    t.field(Project.title);
+    t.field(Project.preview);
+    t.field(Project.repoLink);
+    t.field(Project.siteLink);
+    t.field(Project.description);
+    t.field(Project.isApproved);
+    t.field(Project.likesCount);
+    t.field(Project.createdAt);
+    t.field(Project.tags);
+    t.field(Project.author);
+    t.field(Project.likes);
   },
 });
 
@@ -79,23 +81,6 @@ export const ReactToProjectInput = inputObjectType({
   },
 });
 
-const FavoriteActions = enumType({
-  name: 'FavoriteAction',
-  members: ['FAVORITE', 'UNDO'],
-  description: 'Favorite actions',
-});
-
-export const FavoriteProjectInput = inputObjectType({
-  name: 'FavoriteProjectInput',
-  definition(t) {
-    t.nonNull.string('projectId');
-    t.nonNull.string('userId');
-    t.nonNull.field('action', {
-      type: FavoriteActions,
-    });
-  },
-});
-
 export const GetProject = extendType({
   type: 'Query',
   definition(t) {
@@ -109,7 +94,6 @@ export const GetProject = extendType({
           where: { id: args.id },
           include: {
             likes: true,
-            favorites: true,
             author: true,
           },
         });
@@ -149,7 +133,6 @@ export const GetApprovedProjects = extendType({
             },
             include: {
               likes: true,
-              favorites: true,
               author: true,
             },
             orderBy: {
@@ -164,7 +147,6 @@ export const GetApprovedProjects = extendType({
             },
             include: {
               likes: true,
-              favorites: true,
               author: true,
             },
             orderBy: {
@@ -211,7 +193,6 @@ export const GetProjectsAdmin = extendType({
             },
             include: {
               likes: true,
-              favorites: true,
               author: true,
             },
             orderBy: {
@@ -223,7 +204,6 @@ export const GetProjectsAdmin = extendType({
             take: 9,
             include: {
               likes: true,
-              favorites: true,
               author: true,
             },
             orderBy: {
@@ -277,7 +257,6 @@ export const GetMyProjects = extendType({
             },
             include: {
               likes: true,
-              favorites: true,
               author: true,
             },
             orderBy: {
@@ -292,94 +271,6 @@ export const GetMyProjects = extendType({
             },
             include: {
               likes: true,
-              favorites: true,
-              author: true,
-            },
-            orderBy: {
-              createdAt: 'desc',
-            },
-          });
-        }
-
-        const lastResult = results[8];
-        const cursor = lastResult?.id;
-
-        return {
-          prevCursor: args.cursor,
-          nextCursor: cursor,
-          results,
-          totalCount,
-        };
-      },
-    });
-  },
-});
-
-export const GetMyFavoriteProjects = extendType({
-  type: 'Query',
-  definition(t) {
-    t.nonNull.field('getMyFavoriteProjects', {
-      type: 'ProjectsResponse',
-      description: 'Get all my favorite projects',
-      args: {
-        cursor: stringArg(),
-      },
-      async resolve(_root, args, ctx) {
-        const incomingCursor = args?.cursor;
-        let results;
-
-        const totalCount = await ctx.db.project.count({
-          where: {
-            favorites: {
-              some: {
-                id: {
-                  equals: ctx.currentUserId,
-                },
-              },
-            },
-          },
-        });
-
-        if (incomingCursor) {
-          results = await ctx.db.project.findMany({
-            take: 9,
-            skip: 1,
-            cursor: {
-              id: incomingCursor,
-            },
-            where: {
-              favorites: {
-                some: {
-                  id: {
-                    equals: ctx.currentUserId,
-                  },
-                },
-              },
-            },
-            include: {
-              likes: true,
-              favorites: true,
-              author: true,
-            },
-            orderBy: {
-              createdAt: 'desc',
-            },
-          });
-        } else {
-          results = await ctx.db.project.findMany({
-            take: 9,
-            where: {
-              favorites: {
-                some: {
-                  id: {
-                    equals: ctx.currentUserId,
-                  },
-                },
-              },
-            },
-            include: {
-              likes: true,
-              favorites: true,
               author: true,
             },
             orderBy: {
@@ -425,6 +316,7 @@ export const CreateProject = extendType({
             tags: {
               set: tags,
             },
+            likesCount: 0,
             author: {
               connect: {
                 id: authorId,
@@ -566,51 +458,6 @@ export const ReactToProject = extendType({
           },
           include: {
             likes: true,
-            favorites: true,
-            author: true,
-          },
-        });
-      },
-    });
-  },
-});
-
-export const FavoriteProject = extendType({
-  type: 'Mutation',
-  definition(t) {
-    t.field('favoriteProject', {
-      type: 'Project',
-      args: {
-        input: 'FavoriteProjectInput',
-      },
-      resolve(_root, { input }, ctx) {
-        if (!input) {
-          throw new Error('Invalid action');
-        }
-
-        if (!input.projectId) {
-          throw new Error('Missing project dd');
-        }
-        let action;
-        if (input.action === 'FAVORITE') {
-          action = 'connect';
-        } else {
-          action = 'disconnect';
-        }
-
-        return ctx.db.project.update({
-          where: {
-            id: input.projectId,
-          },
-          data: {
-            favorites: {
-              [action]: {
-                id: input.userId,
-              },
-            },
-          },
-          include: {
-            favorites: true,
             author: true,
           },
         });

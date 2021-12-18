@@ -4,8 +4,8 @@
  */
 
 
-import { Context } from "./src/context/index"
-import { core } from "nexus"
+import type { Context } from "./src/context/index"
+import type { core } from "nexus"
 declare global {
   interface NexusGenCustomInputMethods<TypeName extends string> {
     /**
@@ -30,12 +30,7 @@ declare global {
     json<FieldName extends string>(fieldName: FieldName, ...opts: core.ScalarOutSpread<TypeName, FieldName>): void // "JSONObject";
   }
 }
-declare global {
-  interface NexusGenCustomOutputProperties<TypeName extends string> {
-    model: NexusPrisma<TypeName, 'model'>
-    crud: any
-  }
-}
+
 
 declare global {
   interface NexusGen extends NexusGenTypes {}
@@ -49,11 +44,6 @@ export interface NexusGenInputs {
     siteLink: string; // String!
     tags: Array<string | null>; // [String]!
     title: string; // String!
-  }
-  FavoriteProjectInput: { // input type
-    action: NexusGenEnums['FavoriteAction']; // FavoriteAction!
-    projectId: string; // String!
-    userId: string; // String!
   }
   ReactToProjectInput: { // input type
     action: NexusGenEnums['ProjectAction']; // ProjectAction!
@@ -78,7 +68,6 @@ export interface NexusGenInputs {
 }
 
 export interface NexusGenEnums {
-  FavoriteAction: "FAVORITE" | "UNDO"
   ProjectAction: "DISLIKE" | "LIKE"
   Role: "ADMIN" | "USER"
 }
@@ -96,13 +85,11 @@ export interface NexusGenScalars {
 export interface NexusGenObjects {
   Mutation: {};
   Project: { // root type
-    author: NexusGenRootTypes['User']; // User!
     createdAt: NexusGenScalars['DateTime']; // DateTime!
     description: string; // String!
-    favorites?: NexusGenRootTypes['User'][] | null; // [User!]
     id: string; // ID!
     isApproved: boolean; // Boolean!
-    likes?: NexusGenRootTypes['User'][] | null; // [User!]
+    likesCount: number; // Int!
     preview: string; // String!
     repoLink: string; // String!
     siteLink: string; // String!
@@ -120,7 +107,6 @@ export interface NexusGenObjects {
     avatar?: string | null; // String
     discord?: string | null; // String
     email: string; // String!
-    favoriteProjects?: NexusGenRootTypes['Project'][] | null; // [Project!]
     github?: string | null; // String
     id: string; // ID!
     name: string; // String!
@@ -145,7 +131,6 @@ export interface NexusGenFieldTypes {
     createProject: NexusGenRootTypes['Project'] | null; // Project
     deleteManyProjects: NexusGenScalars['JSONObject'] | null; // JSONObject
     deleteProject: string | null; // String
-    favoriteProject: NexusGenRootTypes['Project'] | null; // Project
     login: NexusGenScalars['JSONObject']; // JSONObject!
     reactToProject: NexusGenRootTypes['Project'] | null; // Project
     signup: NexusGenScalars['JSONObject']; // JSONObject!
@@ -158,10 +143,10 @@ export interface NexusGenFieldTypes {
     author: NexusGenRootTypes['User']; // User!
     createdAt: NexusGenScalars['DateTime']; // DateTime!
     description: string; // String!
-    favorites: NexusGenRootTypes['User'][] | null; // [User!]
     id: string; // ID!
     isApproved: boolean; // Boolean!
-    likes: NexusGenRootTypes['User'][] | null; // [User!]
+    likes: NexusGenRootTypes['User'][]; // [User!]!
+    likesCount: number; // Int!
     preview: string; // String!
     repoLink: string; // String!
     siteLink: string; // String!
@@ -177,7 +162,6 @@ export interface NexusGenFieldTypes {
   Query: { // field return type
     getApprovedProjects: NexusGenRootTypes['ProjectsResponse']; // ProjectsResponse!
     getCurrentUser: NexusGenRootTypes['User'] | null; // User
-    getMyFavoriteProjects: NexusGenRootTypes['ProjectsResponse']; // ProjectsResponse!
     getMyProjects: NexusGenRootTypes['ProjectsResponse']; // ProjectsResponse!
     getProject: NexusGenRootTypes['Project'] | null; // Project
     getProjectsAdmin: NexusGenRootTypes['ProjectsResponse']; // ProjectsResponse!
@@ -188,7 +172,6 @@ export interface NexusGenFieldTypes {
     avatar: string | null; // String
     discord: string | null; // String
     email: string; // String!
-    favoriteProjects: NexusGenRootTypes['Project'][] | null; // [Project!]
     github: string | null; // String
     id: string; // ID!
     name: string; // String!
@@ -203,7 +186,6 @@ export interface NexusGenFieldTypeNames {
     createProject: 'Project'
     deleteManyProjects: 'JSONObject'
     deleteProject: 'String'
-    favoriteProject: 'Project'
     login: 'JSONObject'
     reactToProject: 'Project'
     signup: 'JSONObject'
@@ -216,10 +198,10 @@ export interface NexusGenFieldTypeNames {
     author: 'User'
     createdAt: 'DateTime'
     description: 'String'
-    favorites: 'User'
     id: 'ID'
     isApproved: 'Boolean'
     likes: 'User'
+    likesCount: 'Int'
     preview: 'String'
     repoLink: 'String'
     siteLink: 'String'
@@ -235,7 +217,6 @@ export interface NexusGenFieldTypeNames {
   Query: { // field return type name
     getApprovedProjects: 'ProjectsResponse'
     getCurrentUser: 'User'
-    getMyFavoriteProjects: 'ProjectsResponse'
     getMyProjects: 'ProjectsResponse'
     getProject: 'Project'
     getProjectsAdmin: 'ProjectsResponse'
@@ -246,7 +227,6 @@ export interface NexusGenFieldTypeNames {
     avatar: 'String'
     discord: 'String'
     email: 'String'
-    favoriteProjects: 'Project'
     github: 'String'
     id: 'ID'
     name: 'String'
@@ -266,9 +246,6 @@ export interface NexusGenArgTypes {
     }
     deleteProject: { // args
       id: string; // ID!
-    }
-    favoriteProject: { // args
-      input?: NexusGenInputs['FavoriteProjectInput'] | null; // FavoriteProjectInput
     }
     login: { // args
       email: string; // String!
@@ -300,9 +277,6 @@ export interface NexusGenArgTypes {
   }
   Query: {
     getApprovedProjects: { // args
-      cursor?: string | null; // String
-    }
-    getMyFavoriteProjects: { // args
       cursor?: string | null; // String
     }
     getMyProjects: { // args
@@ -379,6 +353,8 @@ export interface NexusGenTypes {
 
 declare global {
   interface NexusGenPluginTypeConfig<TypeName extends string> {
+  }
+  interface NexusGenPluginInputTypeConfig<TypeName extends string> {
   }
   interface NexusGenPluginFieldConfig<TypeName extends string, FieldName extends string> {
   }

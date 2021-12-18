@@ -13,9 +13,6 @@ fragment ProjectsResponseFragment on ProjectsResponse {
     likes {
       id
     }
-    favorites {
-      id
-    }
     preview
     repoLink
     siteLink

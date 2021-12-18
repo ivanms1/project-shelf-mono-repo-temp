@@ -57,7 +57,6 @@ export const client = new ApolloClient({
         fields: {
           getApprovedProjects: projectsMergeConfig,
           getMyProjects: projectsMergeConfig,
-          getMyFavoriteProjects: projectsMergeConfig,
           adminGetNotApprovedProjects: projectsMergeConfig,
         },
       },

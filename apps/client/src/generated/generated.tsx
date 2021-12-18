@@ -297,26 +297,6 @@ export type GetUserCardQuery = (
   )> }
 );
 
-export type FavoriteProjectMutationMutationVariables = Exact<{
-  input?: Maybe<FavoriteProjectInput>;
-}>;
-
-
-export type FavoriteProjectMutationMutation = (
-  { __typename?: 'Mutation' }
-  & { favoriteProject?: Maybe<(
-    { __typename?: 'Project' }
-    & Pick<Project, 'id' | 'title' | 'preview' | 'description' | 'siteLink' | 'repoLink' | 'isApproved' | 'createdAt'>
-    & { likes?: Maybe<Array<(
-      { __typename?: 'User' }
-      & Pick<User, 'id'>
-    )>>, favorites?: Maybe<Array<(
-      { __typename?: 'User' }
-      & Pick<User, 'id'>
-    )>> }
-  )> }
-);
-
 export type ReactToProjectMutationVariables = Exact<{
   input?: Maybe<ReactToProjectInput>;
 }>;
@@ -328,9 +308,6 @@ export type ReactToProjectMutation = (
     { __typename?: 'Project' }
     & Pick<Project, 'id' | 'title' | 'preview' | 'description' | 'siteLink' | 'repoLink' | 'isApproved' | 'createdAt'>
     & { likes?: Maybe<Array<(
-      { __typename?: 'User' }
-      & Pick<User, 'id'>
-    )>>, favorites?: Maybe<Array<(
       { __typename?: 'User' }
       & Pick<User, 'id'>
     )>> }
@@ -370,9 +347,6 @@ export type ProjectsResponseFragmentFragment = (
     ), likes?: Maybe<Array<(
       { __typename?: 'User' }
       & Pick<User, 'id'>
-    )>>, favorites?: Maybe<Array<(
-      { __typename?: 'User' }
-      & Pick<User, 'id'>
     )>> }
   )> }
 );
@@ -393,19 +367,6 @@ export type UpdateStatusMutation = (
       & Pick<User, 'name' | 'email'>
     ) }
   )> }
-);
-
-export type GetAllDissaprovedPojectsQueryVariables = Exact<{
-  cursor?: Maybe<Scalars['String']>;
-}>;
-
-
-export type GetAllDissaprovedPojectsQuery = (
-  { __typename?: 'Query' }
-  & { projects: (
-    { __typename?: 'ProjectsResponse' }
-    & ProjectsResponseFragmentFragment
-  ) }
 );
 
 export type GetProjectsAdminQueryVariables = Exact<{
@@ -459,19 +420,6 @@ export type GetUserEditQuery = (
     { __typename?: 'User' }
     & Pick<User, 'name' | 'email'>
   )> }
-);
-
-export type GetMyFavoriteProjectsQueryVariables = Exact<{
-  cursor?: Maybe<Scalars['String']>;
-}>;
-
-
-export type GetMyFavoriteProjectsQuery = (
-  { __typename?: 'Query' }
-  & { projects: (
-    { __typename?: 'ProjectsResponse' }
-    & ProjectsResponseFragmentFragment
-  ) }
 );
 
 export type GetAllProjectsQueryVariables = Exact<{
@@ -577,9 +525,6 @@ export const ProjectsResponseFragmentFragmentDoc = gql`
       email
     }
     likes {
-      id
-    }
-    favorites {
       id
     }
     preview
@@ -763,52 +708,6 @@ export function useGetUserCardLazyQuery(baseOptions?: Apollo.LazyQueryHookOption
 export type GetUserCardQueryHookResult = ReturnType<typeof useGetUserCardQuery>;
 export type GetUserCardLazyQueryHookResult = ReturnType<typeof useGetUserCardLazyQuery>;
 export type GetUserCardQueryResult = Apollo.QueryResult<GetUserCardQuery, GetUserCardQueryVariables>;
-export const FavoriteProjectMutationDocument = gql`
-    mutation FavoriteProjectMutation($input: FavoriteProjectInput) {
-  favoriteProject(input: $input) {
-    id
-    title
-    preview
-    description
-    siteLink
-    repoLink
-    isApproved
-    likes {
-      id
-    }
-    favorites {
-      id
-    }
-    createdAt
-  }
-}
-    `;
-export type FavoriteProjectMutationMutationFn = Apollo.MutationFunction<FavoriteProjectMutationMutation, FavoriteProjectMutationMutationVariables>;
-
-/**
- * __useFavoriteProjectMutationMutation__
- *
- * To run a mutation, you first call `useFavoriteProjectMutationMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useFavoriteProjectMutationMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [favoriteProjectMutationMutation, { data, loading, error }] = useFavoriteProjectMutationMutation({
- *   variables: {
- *      input: // value for 'input'
- *   },
- * });
- */
-export function useFavoriteProjectMutationMutation(baseOptions?: Apollo.MutationHookOptions<FavoriteProjectMutationMutation, FavoriteProjectMutationMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<FavoriteProjectMutationMutation, FavoriteProjectMutationMutationVariables>(FavoriteProjectMutationDocument, options);
-      }
-export type FavoriteProjectMutationMutationHookResult = ReturnType<typeof useFavoriteProjectMutationMutation>;
-export type FavoriteProjectMutationMutationResult = Apollo.MutationResult<FavoriteProjectMutationMutation>;
-export type FavoriteProjectMutationMutationOptions = Apollo.BaseMutationOptions<FavoriteProjectMutationMutation, FavoriteProjectMutationMutationVariables>;
 export const ReactToProjectDocument = gql`
     mutation ReactToProject($input: ReactToProjectInput) {
   reactToProject(input: $input) {
@@ -820,9 +719,6 @@ export const ReactToProjectDocument = gql`
     repoLink
     isApproved
     likes {
-      id
-    }
-    favorites {
       id
     }
     createdAt
@@ -967,41 +863,6 @@ export function useUpdateStatusMutation(baseOptions?: Apollo.MutationHookOptions
 export type UpdateStatusMutationHookResult = ReturnType<typeof useUpdateStatusMutation>;
 export type UpdateStatusMutationResult = Apollo.MutationResult<UpdateStatusMutation>;
 export type UpdateStatusMutationOptions = Apollo.BaseMutationOptions<UpdateStatusMutation, UpdateStatusMutationVariables>;
-export const GetAllDissaprovedPojectsDocument = gql`
-    query GetAllDissaprovedPojects($cursor: String = null) {
-  projects: getProjectsAdmin(cursor: $cursor) {
-    ...ProjectsResponseFragment
-  }
-}
-    ${ProjectsResponseFragmentFragmentDoc}`;
-
-/**
- * __useGetAllDissaprovedPojectsQuery__
- *
- * To run a query within a React component, call `useGetAllDissaprovedPojectsQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetAllDissaprovedPojectsQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGetAllDissaprovedPojectsQuery({
- *   variables: {
- *      cursor: // value for 'cursor'
- *   },
- * });
- */
-export function useGetAllDissaprovedPojectsQuery(baseOptions?: Apollo.QueryHookOptions<GetAllDissaprovedPojectsQuery, GetAllDissaprovedPojectsQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetAllDissaprovedPojectsQuery, GetAllDissaprovedPojectsQueryVariables>(GetAllDissaprovedPojectsDocument, options);
-      }
-export function useGetAllDissaprovedPojectsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetAllDissaprovedPojectsQuery, GetAllDissaprovedPojectsQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetAllDissaprovedPojectsQuery, GetAllDissaprovedPojectsQueryVariables>(GetAllDissaprovedPojectsDocument, options);
-        }
-export type GetAllDissaprovedPojectsQueryHookResult = ReturnType<typeof useGetAllDissaprovedPojectsQuery>;
-export type GetAllDissaprovedPojectsLazyQueryHookResult = ReturnType<typeof useGetAllDissaprovedPojectsLazyQuery>;
-export type GetAllDissaprovedPojectsQueryResult = Apollo.QueryResult<GetAllDissaprovedPojectsQuery, GetAllDissaprovedPojectsQueryVariables>;
 export const GetProjectsAdminDocument = gql`
     query GetProjectsAdmin($cursor: String = null) {
   projects: getProjectsAdmin(cursor: $cursor) {
@@ -1158,41 +1019,6 @@ export function useGetUserEditLazyQuery(baseOptions?: Apollo.LazyQueryHookOption
 export type GetUserEditQueryHookResult = ReturnType<typeof useGetUserEditQuery>;
 export type GetUserEditLazyQueryHookResult = ReturnType<typeof useGetUserEditLazyQuery>;
 export type GetUserEditQueryResult = Apollo.QueryResult<GetUserEditQuery, GetUserEditQueryVariables>;
-export const GetMyFavoriteProjectsDocument = gql`
-    query GetMyFavoriteProjects($cursor: String = null) {
-  projects: getMyFavoriteProjects(cursor: $cursor) {
-    ...ProjectsResponseFragment
-  }
-}
-    ${ProjectsResponseFragmentFragmentDoc}`;
-
-/**
- * __useGetMyFavoriteProjectsQuery__
- *
- * To run a query within a React component, call `useGetMyFavoriteProjectsQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetMyFavoriteProjectsQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGetMyFavoriteProjectsQuery({
- *   variables: {
- *      cursor: // value for 'cursor'
- *   },
- * });
- */
-export function useGetMyFavoriteProjectsQuery(baseOptions?: Apollo.QueryHookOptions<GetMyFavoriteProjectsQuery, GetMyFavoriteProjectsQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetMyFavoriteProjectsQuery, GetMyFavoriteProjectsQueryVariables>(GetMyFavoriteProjectsDocument, options);
-      }
-export function useGetMyFavoriteProjectsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetMyFavoriteProjectsQuery, GetMyFavoriteProjectsQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetMyFavoriteProjectsQuery, GetMyFavoriteProjectsQueryVariables>(GetMyFavoriteProjectsDocument, options);
-        }
-export type GetMyFavoriteProjectsQueryHookResult = ReturnType<typeof useGetMyFavoriteProjectsQuery>;
-export type GetMyFavoriteProjectsLazyQueryHookResult = ReturnType<typeof useGetMyFavoriteProjectsLazyQuery>;
-export type GetMyFavoriteProjectsQueryResult = Apollo.QueryResult<GetMyFavoriteProjectsQuery, GetMyFavoriteProjectsQueryVariables>;
 export const GetAllProjectsDocument = gql`
     query GetAllProjects($cursor: String = null) {
   projects: getApprovedProjects(cursor: $cursor) {

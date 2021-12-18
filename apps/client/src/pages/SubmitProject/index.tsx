@@ -37,9 +37,6 @@ function SubmitProject() {
                   likes {
                     id
                   }
-                  favorites {
-                    id
-                  }
                   createdAt
                 }
               `,

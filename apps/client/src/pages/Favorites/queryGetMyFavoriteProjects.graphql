@@ -1,7 +1,0 @@
-#import "../../graphql/projectFragment.graphql"
-
-query GetMyFavoriteProjects($cursor: String = null) {
-  projects: getMyFavoriteProjects(cursor: $cursor) {
-    ...ProjectsResponseFragment
-  }
-}

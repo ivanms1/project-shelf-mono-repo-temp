@@ -1,6 +1,4 @@
 import React, { useState } from 'react';
-import toast from 'react-hot-toast';
-import { gql } from '@apollo/client';
 
 import useCurrentUser from '../useCurrentUser';
 import Spinner from '../Spinner';
@@ -13,7 +11,6 @@ import { ReactComponent as StarFill } from '../../assets/Star-Fill.svg';
 import {
   Maybe,
   Project,
-  useFavoriteProjectMutationMutation,
   User,
   useReactToProjectMutation,
 } from '../../generated/generated';
@@ -38,7 +35,6 @@ type ProjectResponseType = { __typename?: 'Project' } & Pick<
 > & {
     author: { __typename?: 'User' } & Pick<User, 'name' | 'email'>;
     likes: Array<Maybe<{ __typename?: 'User' } & Pick<User, 'id'>>>;
-    favorites: Array<Maybe<{ __typename?: 'User' } & Pick<User, 'id'>>>;
   };
 
 const getActionLikes = (
@@ -48,15 +44,6 @@ const getActionLikes = (
   return project?.likes?.some((user) => user?.id === currentUser?.id)
     ? 'DISLIKE'
     : 'LIKE';
-};
-
-const getActionFavorite = (
-  project: ProjectResponseType,
-  currentUser: any
-): any => {
-  return project?.favorites?.some((user) => user?.id === currentUser?.id)
-    ? 'UNDO'
-    : 'FAVORITE';
 };
 
 interface CardTwoProps {
@@ -81,83 +68,7 @@ function Cardtwo({ project, children }: CardTwoProps) {
     };
   };
 
-  const getVariablesFavorite = () => {
-    return {
-      variables: {
-        input: {
-          projectId: project?.id,
-          userId: currentUser?.id ?? '',
-          action: getActionFavorite(project, currentUser),
-        },
-      },
-    };
-  };
-
   const [reactToProject] = useReactToProjectMutation(getVariablesLikes());
-
-  const [favoriteProject, { loading }] = useFavoriteProjectMutationMutation({
-    ...getVariablesFavorite(),
-    update(cache, { data }) {
-      cache.modify({
-        fields: {
-          getMyFavoriteProjects(existing = {}, { readField }) {
-            if (getActionFavorite(project, currentUser) === 'FAVORITE') {
-              const projectFavorited = cache.writeFragment({
-                data: data?.favoriteProject,
-                fragment: gql`
-                  fragment NewProject on Project {
-                    id
-                    title
-                    preview
-                    description
-                    siteLink
-                    repoLink
-                    isApproved
-                    likes {
-                      id
-                    }
-                    favorites {
-                      id
-                    }
-                    createdAt
-                  }
-                `,
-              });
-              return {
-                ...existing,
-                results: [...existing.results, projectFavorited].sort(
-                  (a, b) =>
-                    // @ts-expect-error to fix later
-                    new Date(readField('createdAt', b)) -
-                    // @ts-expect-error to fix later
-                    new Date(readField('createdAt', a))
-                ),
-              };
-            }
-
-            return {
-              ...existing,
-              results: existing.results.filter(
-                (p: any) => readField('id', p) !== data?.favoriteProject?.id
-              ),
-            };
-          },
-        },
-      });
-    },
-  });
-
-  const favoriteClickHandler = async () => {
-    try {
-      const action = getActionFavorite(project, currentUser);
-      const msg =
-        action === 'FAVORITE' ? `Added to favorites` : `Removed from favorites`;
-      await favoriteProject();
-      toast.success(msg);
-    } catch (error) {
-      toast.error('Oops, too fast');
-    }
-  };
 
   return (
     <Container>
@@ -168,7 +79,6 @@ function Cardtwo({ project, children }: CardTwoProps) {
           <StarFill />
         )}
       </button>
-
       <CardContainerInner isApproved={project.isApproved}>
         <div className="imgContainer">
           {!imgLoaded ? (
@@ -184,13 +94,6 @@ function Cardtwo({ project, children }: CardTwoProps) {
 
           <div className="overlay">
             <div className="overlayContent">
-              <button disabled={loading} onClick={favoriteClickHandler}>
-                {getActionFavorite(project, currentUser) === 'FAVORITE' ? (
-                  <Star />
-                ) : (
-                  <StarFill />
-                )}
-              </button>
               <ViewDetails to={`/projectDetails/${project.id}`}>
                 View Details
               </ViewDetails>
