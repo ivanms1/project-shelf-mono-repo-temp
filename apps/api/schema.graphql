@@ -40,6 +40,9 @@ type Project {
   description: String!
   id: ID!
   isApproved: Boolean!
+
+  """If this project is liked by the current user"""
+  isLiked: Boolean
   likes: [User!]!
   likesCount: Int!
   preview: String!

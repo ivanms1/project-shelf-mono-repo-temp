@@ -22,32 +22,12 @@ import {
   ViewDetails,
 } from './style';
 
-type ProjectResponseType = { __typename?: 'Project' } & Pick<
-  Project,
-  | 'id'
-  | 'title'
-  | 'createdAt'
-  | 'preview'
-  | 'repoLink'
-  | 'siteLink'
-  | 'description'
-  | 'isApproved'
-> & {
-    author: { __typename?: 'User' } & Pick<User, 'name' | 'email'>;
-    likes: Array<Maybe<{ __typename?: 'User' } & Pick<User, 'id'>>>;
-  };
-
-const getActionLikes = (
-  project: ProjectResponseType,
-  currentUser: any
-): any => {
-  return project?.likes?.some((user) => user?.id === currentUser?.id)
-    ? 'DISLIKE'
-    : 'LIKE';
-};
+interface ProjectType extends Omit<Project, 'likes'> {
+  likes: Partial<User>[];
+}
 
 interface CardTwoProps {
-  project: ProjectResponseType;
+  project: ProjectType;
   children?: React.ReactNode;
 }
 
@@ -56,29 +36,9 @@ function Cardtwo({ project, children }: CardTwoProps) {
 
   const { currentUser } = useCurrentUser();
 
-  const getVariablesLikes = () => {
-    return {
-      variables: {
-        input: {
-          projectId: project?.id,
-          userId: currentUser?.id ?? '',
-          action: getActionLikes(project, currentUser),
-        },
-      },
-    };
-  };
-
-  const [reactToProject] = useReactToProjectMutation(getVariablesLikes());
-
   return (
     <Container>
-      <button onClick={() => reactToProject()} className="starContainer">
-        {getActionLikes(project, currentUser) === 'LIKE' ? (
-          <Star />
-        ) : (
-          <StarFill />
-        )}
-      </button>
+      <Star className="starContainer" />
       <CardContainerInner isApproved={project.isApproved}>
         <div className="imgContainer">
           {!imgLoaded ? (

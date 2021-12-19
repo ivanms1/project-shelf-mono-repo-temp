@@ -145,6 +145,7 @@ export interface NexusGenFieldTypes {
     description: string; // String!
     id: string; // ID!
     isApproved: boolean; // Boolean!
+    isLiked: boolean | null; // Boolean
     likes: NexusGenRootTypes['User'][]; // [User!]!
     likesCount: number; // Int!
     preview: string; // String!
@@ -200,6 +201,7 @@ export interface NexusGenFieldTypeNames {
     description: 'String'
     id: 'ID'
     isApproved: 'Boolean'
+    isLiked: 'Boolean'
     likes: 'User'
     likesCount: 'Int'
     preview: 'String'

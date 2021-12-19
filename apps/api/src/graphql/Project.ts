@@ -27,6 +27,27 @@ export const ProjectType = objectType({
     t.field(Project.tags);
     t.field(Project.author);
     t.field(Project.likes);
+    t.boolean('isLiked', {
+      description: 'If this project is liked by the current user',
+      async resolve(_root, _, ctx) {
+        if (!ctx?.currentUserId) {
+          return false;
+        }
+
+        const isUserLike = await ctx.db.project.findFirst({
+          where: {
+            id: _root.id,
+            likes: {
+              some: {
+                id: ctx.currentUserId,
+              },
+            },
+          },
+        });
+
+        return !!isUserLike;
+      },
+    });
   },
 });
 

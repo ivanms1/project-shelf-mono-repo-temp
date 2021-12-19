@@ -28,25 +28,12 @@ export type CreateProjectInput = {
 };
 
 
-/** Favorite actions */
-export enum FavoriteAction {
-  Favorite = 'FAVORITE',
-  Undo = 'UNDO'
-}
-
-export type FavoriteProjectInput = {
-  action: FavoriteAction;
-  projectId: Scalars['String'];
-  userId: Scalars['String'];
-};
-
 
 export type Mutation = {
   __typename?: 'Mutation';
   createProject?: Maybe<Project>;
   deleteManyProjects?: Maybe<Scalars['JSONObject']>;
   deleteProject?: Maybe<Scalars['String']>;
-  favoriteProject?: Maybe<Project>;
   login: Scalars['JSONObject'];
   reactToProject?: Maybe<Project>;
   signup: Scalars['JSONObject'];
@@ -69,11 +56,6 @@ export type MutationDeleteManyProjectsArgs = {
 
 export type MutationDeleteProjectArgs = {
   id: Scalars['ID'];
-};
-
-
-export type MutationFavoriteProjectArgs = {
-  input?: Maybe<FavoriteProjectInput>;
 };
 
 
@@ -122,10 +104,12 @@ export type Project = {
   author: User;
   createdAt: Scalars['DateTime'];
   description: Scalars['String'];
-  favorites?: Maybe<Array<User>>;
   id: Scalars['ID'];
   isApproved: Scalars['Boolean'];
-  likes?: Maybe<Array<User>>;
+  /** If this project is liked by the current user */
+  isLiked?: Maybe<Scalars['Boolean']>;
+  likes: Array<User>;
+  likesCount: Scalars['Int'];
   preview: Scalars['String'];
   repoLink: Scalars['String'];
   siteLink: Scalars['String'];
@@ -152,8 +136,6 @@ export type Query = {
   /** Get all approved projects */
   getApprovedProjects: ProjectsResponse;
   getCurrentUser?: Maybe<User>;
-  /** Get all my favorite projects */
-  getMyFavoriteProjects: ProjectsResponse;
   /** Get all my projects */
   getMyProjects: ProjectsResponse;
   getProject?: Maybe<Project>;
@@ -165,11 +147,6 @@ export type Query = {
 
 
 export type QueryGetApprovedProjectsArgs = {
-  cursor?: Maybe<Scalars['String']>;
-};
-
-
-export type QueryGetMyFavoriteProjectsArgs = {
   cursor?: Maybe<Scalars['String']>;
 };
 
@@ -227,7 +204,6 @@ export type User = {
   avatar?: Maybe<Scalars['String']>;
   discord?: Maybe<Scalars['String']>;
   email: Scalars['String'];
-  favoriteProjects?: Maybe<Array<Project>>;
   github?: Maybe<Scalars['String']>;
   id: Scalars['ID'];
   name: Scalars['String'];
@@ -307,10 +283,10 @@ export type ReactToProjectMutation = (
   & { reactToProject?: Maybe<(
     { __typename?: 'Project' }
     & Pick<Project, 'id' | 'title' | 'preview' | 'description' | 'siteLink' | 'repoLink' | 'isApproved' | 'createdAt'>
-    & { likes?: Maybe<Array<(
+    & { likes: Array<(
       { __typename?: 'User' }
       & Pick<User, 'id'>
-    )>> }
+    )> }
   )> }
 );
 
@@ -340,14 +316,14 @@ export type ProjectsResponseFragmentFragment = (
   & Pick<ProjectsResponse, 'nextCursor' | 'prevCursor' | 'totalCount'>
   & { results: Array<(
     { __typename?: 'Project' }
-    & Pick<Project, 'id' | 'title' | 'createdAt' | 'preview' | 'repoLink' | 'siteLink' | 'description' | 'isApproved'>
+    & Pick<Project, 'id' | 'title' | 'createdAt' | 'isLiked' | 'likesCount' | 'tags' | 'preview' | 'repoLink' | 'siteLink' | 'description' | 'isApproved'>
     & { author: (
       { __typename?: 'User' }
-      & Pick<User, 'name' | 'email'>
-    ), likes?: Maybe<Array<(
+      & Pick<User, 'id' | 'role' | 'name' | 'email'>
+    ), likes: Array<(
       { __typename?: 'User' }
       & Pick<User, 'id'>
-    )>> }
+    )> }
   )> }
 );
 
@@ -491,10 +467,10 @@ export type CreateUserProjectMutation = (
   & { createProject?: Maybe<(
     { __typename?: 'Project' }
     & Pick<Project, 'id' | 'title' | 'preview' | 'description' | 'createdAt' | 'siteLink' | 'repoLink' | 'isApproved'>
-    & { likes?: Maybe<Array<(
+    & { likes: Array<(
       { __typename?: 'User' }
       & Pick<User, 'id' | 'name'>
-    )>> }
+    )> }
   )> }
 );
 
@@ -521,12 +497,17 @@ export const ProjectsResponseFragmentFragmentDoc = gql`
     title
     createdAt
     author {
+      id
+      role
       name
       email
     }
     likes {
       id
     }
+    isLiked
+    likesCount
+    tags
     preview
     repoLink
     siteLink

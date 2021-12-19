@@ -7,12 +7,17 @@ fragment ProjectsResponseFragment on ProjectsResponse {
     title
     createdAt
     author {
+      id
+      role
       name
       email
     }
     likes {
       id
     }
+    isLiked
+    likesCount
+    tags
     preview
     repoLink
     siteLink
