@@ -9,7 +9,7 @@ interface FormInput extends InputHTMLAttributes<HTMLInputElement> {
   wrapperStyles?: string;
 }
 
-function FormInput({
+export function FormInput({
   name,
   id,
   type = 'text',

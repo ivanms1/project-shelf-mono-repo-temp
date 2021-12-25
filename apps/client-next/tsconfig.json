@@ -10,18 +10,7 @@
     "forceConsistentCasingInFileNames": true,
     "noEmit": true,
     "resolveJsonModule": true,
-    "isolatedModules": true,
-    "baseUrl": ".",
-    "paths": {
-      "@/pages/*": ["pages/*"],
-      "@/components/*": ["src/components/*"],
-      "@/hooks/*": ["src/hooks/*"],
-      "@/helpers/*": ["src/helpers/*"],
-      "@/assets/*": ["src/assets/*"],
-      "@/types/*": ["src/types/*"],
-      "@/store/*": ["store/*"],
-      "@/generated/*": ["src/generated/*"]
-    }
+    "isolatedModules": true
   },
   "include": ["**/*.ts", "**/*.tsx", "**/*.js", "**/*.jsx", "next-env.d.ts"],
   "exclude": ["node_modules"]

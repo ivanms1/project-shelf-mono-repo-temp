@@ -3,8 +3,7 @@ import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { SubmitHandler, useForm } from 'react-hook-form';
 
-import FormInput from '@/components/Form/Input/FormInput';
-import Button from '@/components/Button';
+import { FormInput, Button } from '@/components';
 
 import { useRegisterUserMutation } from '@/generated/generated';
 
