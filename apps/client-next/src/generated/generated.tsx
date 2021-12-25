@@ -212,6 +212,59 @@ export type User = {
   role: Role;
 };
 
+export type ProjectsResponseFragmentFragment = (
+  { __typename?: 'ProjectsResponse' }
+  & Pick<ProjectsResponse, 'nextCursor' | 'prevCursor' | 'totalCount'>
+  & { results: Array<(
+    { __typename?: 'Project' }
+    & Pick<Project, 'id' | 'title' | 'createdAt' | 'isLiked' | 'likesCount' | 'tags' | 'preview' | 'repoLink' | 'siteLink' | 'description' | 'isApproved'>
+    & { author: (
+      { __typename?: 'User' }
+      & Pick<User, 'id' | 'role' | 'name' | 'email'>
+    ), likes: Array<(
+      { __typename?: 'User' }
+      & Pick<User, 'id'>
+    )> }
+  )> }
+);
+
+export type GetAllProjectsQueryVariables = Exact<{
+  cursor?: Maybe<Scalars['String']>;
+}>;
+
+
+export type GetAllProjectsQuery = (
+  { __typename?: 'Query' }
+  & { projects: (
+    { __typename?: 'ProjectsResponse' }
+    & ProjectsResponseFragmentFragment
+  ) }
+);
+
+export type LoginUserMutationVariables = Exact<{
+  email: Scalars['String'];
+  password: Scalars['String'];
+}>;
+
+
+export type LoginUserMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'login'>
+);
+
+export type GetMyProjectsQueryVariables = Exact<{
+  cursor?: Maybe<Scalars['String']>;
+}>;
+
+
+export type GetMyProjectsQuery = (
+  { __typename?: 'Query' }
+  & { projects: (
+    { __typename?: 'ProjectsResponse' }
+    & ProjectsResponseFragmentFragment
+  ) }
+);
+
 export type RegisterUserMutationVariables = Exact<{
   email: Scalars['String'];
   password: Scalars['String'];
@@ -224,7 +277,137 @@ export type RegisterUserMutation = (
   & Pick<Mutation, 'signup'>
 );
 
+export const ProjectsResponseFragmentFragmentDoc = gql`
+    fragment ProjectsResponseFragment on ProjectsResponse {
+  nextCursor
+  prevCursor
+  totalCount
+  results {
+    id
+    title
+    createdAt
+    author {
+      id
+      role
+      name
+      email
+    }
+    likes {
+      id
+    }
+    isLiked
+    likesCount
+    tags
+    preview
+    repoLink
+    siteLink
+    description
+    isApproved
+  }
+}
+    `;
+export const GetAllProjectsDocument = gql`
+    query GetAllProjects($cursor: String = null) {
+  projects: getApprovedProjects(cursor: $cursor) {
+    ...ProjectsResponseFragment
+  }
+}
+    ${ProjectsResponseFragmentFragmentDoc}`;
 
+/**
+ * __useGetAllProjectsQuery__
+ *
+ * To run a query within a React component, call `useGetAllProjectsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetAllProjectsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetAllProjectsQuery({
+ *   variables: {
+ *      cursor: // value for 'cursor'
+ *   },
+ * });
+ */
+export function useGetAllProjectsQuery(baseOptions?: Apollo.QueryHookOptions<GetAllProjectsQuery, GetAllProjectsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetAllProjectsQuery, GetAllProjectsQueryVariables>(GetAllProjectsDocument, options);
+      }
+export function useGetAllProjectsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetAllProjectsQuery, GetAllProjectsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetAllProjectsQuery, GetAllProjectsQueryVariables>(GetAllProjectsDocument, options);
+        }
+export type GetAllProjectsQueryHookResult = ReturnType<typeof useGetAllProjectsQuery>;
+export type GetAllProjectsLazyQueryHookResult = ReturnType<typeof useGetAllProjectsLazyQuery>;
+export type GetAllProjectsQueryResult = Apollo.QueryResult<GetAllProjectsQuery, GetAllProjectsQueryVariables>;
+export const LoginUserDocument = gql`
+    mutation LoginUser($email: String!, $password: String!) {
+  login(email: $email, password: $password)
+}
+    `;
+export type LoginUserMutationFn = Apollo.MutationFunction<LoginUserMutation, LoginUserMutationVariables>;
+
+/**
+ * __useLoginUserMutation__
+ *
+ * To run a mutation, you first call `useLoginUserMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useLoginUserMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [loginUserMutation, { data, loading, error }] = useLoginUserMutation({
+ *   variables: {
+ *      email: // value for 'email'
+ *      password: // value for 'password'
+ *   },
+ * });
+ */
+export function useLoginUserMutation(baseOptions?: Apollo.MutationHookOptions<LoginUserMutation, LoginUserMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<LoginUserMutation, LoginUserMutationVariables>(LoginUserDocument, options);
+      }
+export type LoginUserMutationHookResult = ReturnType<typeof useLoginUserMutation>;
+export type LoginUserMutationResult = Apollo.MutationResult<LoginUserMutation>;
+export type LoginUserMutationOptions = Apollo.BaseMutationOptions<LoginUserMutation, LoginUserMutationVariables>;
+export const GetMyProjectsDocument = gql`
+    query GetMyProjects($cursor: String = null) {
+  projects: getMyProjects(cursor: $cursor) {
+    ...ProjectsResponseFragment
+  }
+}
+    ${ProjectsResponseFragmentFragmentDoc}`;
+
+/**
+ * __useGetMyProjectsQuery__
+ *
+ * To run a query within a React component, call `useGetMyProjectsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetMyProjectsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetMyProjectsQuery({
+ *   variables: {
+ *      cursor: // value for 'cursor'
+ *   },
+ * });
+ */
+export function useGetMyProjectsQuery(baseOptions?: Apollo.QueryHookOptions<GetMyProjectsQuery, GetMyProjectsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetMyProjectsQuery, GetMyProjectsQueryVariables>(GetMyProjectsDocument, options);
+      }
+export function useGetMyProjectsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetMyProjectsQuery, GetMyProjectsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetMyProjectsQuery, GetMyProjectsQueryVariables>(GetMyProjectsDocument, options);
+        }
+export type GetMyProjectsQueryHookResult = ReturnType<typeof useGetMyProjectsQuery>;
+export type GetMyProjectsLazyQueryHookResult = ReturnType<typeof useGetMyProjectsLazyQuery>;
+export type GetMyProjectsQueryResult = Apollo.QueryResult<GetMyProjectsQuery, GetMyProjectsQueryVariables>;
 export const RegisterUserDocument = gql`
     mutation RegisterUser($email: String!, $password: String!, $name: String!) {
   signup(email: $email, password: $password, name: $name)

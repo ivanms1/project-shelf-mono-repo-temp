@@ -1,5 +1,3 @@
-import React from 'react';
-
 interface Button
   extends React.DetailedHTMLProps<
     React.ButtonHTMLAttributes<HTMLButtonElement>,

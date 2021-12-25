@@ -18,9 +18,10 @@
       "@/assets/*": ["apps/client-next/src/assets/*"],
       "@/components": ["libs/components/src/index.ts"],
       "@/generated/*": ["apps/client-next/src/generated/*"],
-      "@/helpers/*": ["apps/client-next/src/helpers/*"],
+      "@/helpers/*": ["apps/client-next/helpers/*"],
       "@/hooks/*": ["apps/client-next/src/hooks/*"],
       "@/pages/*": ["apps/client-next/src/pages/*"],
+      "@/graphql/*": ["apps/client-next/src/graphql/*"],
       "@/store/*": ["store/*"],
       "@/types/*": ["apps/client-next/src/types/*"]
     }

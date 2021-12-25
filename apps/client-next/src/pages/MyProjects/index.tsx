@@ -1,7 +1,21 @@
 import React from 'react';
 
+import { useGetMyProjectsQuery } from '@/generated/generated';
+
 function MyProjects() {
-  return <div></div>;
+  const { data } = useGetMyProjectsQuery();
+  return (
+    <div>
+      <h1>My projects</h1>
+      <div>
+        {data?.projects.results?.map((project) => (
+          <div key={project.id}>
+            <p>{project.title}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
 }
 
 export default MyProjects;

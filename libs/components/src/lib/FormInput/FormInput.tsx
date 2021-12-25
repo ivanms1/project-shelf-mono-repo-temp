@@ -1,4 +1,4 @@
-import React, { InputHTMLAttributes } from 'react';
+import { InputHTMLAttributes } from 'react';
 import { FieldError } from 'react-hook-form';
 
 interface FormInput extends InputHTMLAttributes<HTMLInputElement> {
