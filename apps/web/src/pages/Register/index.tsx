@@ -5,7 +5,7 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 
 import { FormInput, Button } from 'ui';
 
-import { useRegisterUserMutation } from '@/generated/generated';
+import { useRegisterUserMutation } from 'apollo-hooks';
 
 const validationSchema = yup.object().shape({
   firstName: yup

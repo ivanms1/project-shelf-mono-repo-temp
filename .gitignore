@@ -34,5 +34,5 @@ yarn-error.log*
 
 .env
 
- build/**
- dist/**
+build/**
+dist

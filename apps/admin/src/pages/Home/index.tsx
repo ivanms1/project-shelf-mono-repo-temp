@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { useGetAllProjectsQuery } from '@/generated/generated';
+import { useGetAllProjectsQuery } from 'apollo-hooks';
 
 function Home() {
   const { data } = useGetAllProjectsQuery();

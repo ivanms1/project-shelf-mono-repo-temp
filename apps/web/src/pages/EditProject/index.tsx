@@ -3,10 +3,7 @@ import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { SubmitHandler, useForm } from 'react-hook-form';
 
-import {
-  CreateProjectInput,
-  useCreateUserProjectMutation,
-} from '@/generated/generated';
+import { CreateProjectInput, useCreateUserProjectMutation } from 'apollo-hooks';
 import { FormInput, Button } from 'ui';
 
 const PREVIEW_PLACEHOLDER =

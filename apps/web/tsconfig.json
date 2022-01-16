@@ -6,7 +6,6 @@
     "baseUrl": ".",
     "paths": {
       "@/assets/*": ["src/assets/*"],
-      "@/generated/*": ["src/generated/*"],
       "@/helpers/*": ["helpers/*"],
       "@/hooks/*": ["src/hooks/*"],
       "@/pages/*": ["src/pages/*"],

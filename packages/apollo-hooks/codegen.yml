@@ -1,8 +1,9 @@
 overwrite: true
-schema: 'apps/api/prisma/schema.graphql'
+schema: '../../apps/api/src/prisma/schema.graphql'
 generates:
-  apps/client-next/src/generated/generated.tsx:
-    documents: 'apps/web/src/**/*.graphql'
+  generated/index.tsx:
+    documents:
+      ['../../apps/web/src/**/*.graphql', '../../apps/adming/src/**/*.graphql']
     plugins:
       - 'typescript'
       - 'typescript-operations'

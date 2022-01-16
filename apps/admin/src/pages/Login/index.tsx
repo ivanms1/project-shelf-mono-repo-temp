@@ -5,7 +5,7 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 
 import { Button, FormInput } from 'ui';
 
-import { useLoginUserMutation } from '@/generated/generated';
+import { useLoginUserMutation } from 'apollo-hooks';
 
 import { setAuthToken } from '@/helpers/getAuthToken';
 

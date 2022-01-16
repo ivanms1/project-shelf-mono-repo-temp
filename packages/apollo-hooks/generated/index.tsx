@@ -1,10 +1,11 @@
 import { gql } from '@apollo/client';
 import * as Apollo from '@apollo/client';
 export type Maybe<T> = T | null;
+export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
 export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
 export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
-const defaultOptions =  {}
+const defaultOptions = {} as const;
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: string;
@@ -23,11 +24,9 @@ export type CreateProjectInput = {
   preview: Scalars['String'];
   repoLink: Scalars['String'];
   siteLink: Scalars['String'];
-  tags: Array<Maybe<Scalars['String']>>;
+  tags: Array<InputMaybe<Scalars['String']>>;
   title: Scalars['String'];
 };
-
-
 
 export type Mutation = {
   __typename?: 'Mutation';
@@ -45,12 +44,12 @@ export type Mutation = {
 
 
 export type MutationCreateProjectArgs = {
-  input?: Maybe<CreateProjectInput>;
+  input?: InputMaybe<CreateProjectInput>;
 };
 
 
 export type MutationDeleteManyProjectsArgs = {
-  ids: Array<Maybe<Scalars['ID']>>;
+  ids: Array<InputMaybe<Scalars['ID']>>;
 };
 
 
@@ -66,7 +65,7 @@ export type MutationLoginArgs = {
 
 
 export type MutationReactToProjectArgs = {
-  input?: Maybe<ReactToProjectInput>;
+  input?: InputMaybe<ReactToProjectInput>;
 };
 
 
@@ -78,7 +77,7 @@ export type MutationSignupArgs = {
 
 
 export type MutationUpdateProjectArgs = {
-  input?: Maybe<UpdateProjectInput>;
+  input?: InputMaybe<UpdateProjectInput>;
   projectId: Scalars['ID'];
 };
 
@@ -90,7 +89,7 @@ export type MutationUpdateProjectStatusArgs = {
 
 
 export type MutationUpdateUserArgs = {
-  input?: Maybe<UpdateUsertInput>;
+  input?: InputMaybe<UpdateUsertInput>;
   userId: Scalars['String'];
 };
 
@@ -147,12 +146,12 @@ export type Query = {
 
 
 export type QueryGetApprovedProjectsArgs = {
-  cursor?: Maybe<Scalars['String']>;
+  cursor?: InputMaybe<Scalars['String']>;
 };
 
 
 export type QueryGetMyProjectsArgs = {
-  cursor?: Maybe<Scalars['String']>;
+  cursor?: InputMaybe<Scalars['String']>;
 };
 
 
@@ -162,7 +161,7 @@ export type QueryGetProjectArgs = {
 
 
 export type QueryGetProjectsAdminArgs = {
-  cursor?: Maybe<Scalars['String']>;
+  cursor?: InputMaybe<Scalars['String']>;
 };
 
 
@@ -182,12 +181,12 @@ export enum Role {
 }
 
 export type UpdateProjectInput = {
-  description?: Maybe<Scalars['String']>;
-  preview?: Maybe<Scalars['String']>;
-  repoLink?: Maybe<Scalars['String']>;
-  siteLink?: Maybe<Scalars['String']>;
-  tags?: Maybe<Array<Maybe<Scalars['String']>>>;
-  title?: Maybe<Scalars['String']>;
+  description?: InputMaybe<Scalars['String']>;
+  preview?: InputMaybe<Scalars['String']>;
+  repoLink?: InputMaybe<Scalars['String']>;
+  siteLink?: InputMaybe<Scalars['String']>;
+  tags?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  title?: InputMaybe<Scalars['String']>;
 };
 
 /** Update the user information */
@@ -212,48 +211,21 @@ export type User = {
   role: Role;
 };
 
-export type ProjectsResponseFragmentFragment = (
-  { __typename?: 'ProjectsResponse' }
-  & Pick<ProjectsResponse, 'nextCursor' | 'prevCursor' | 'totalCount'>
-  & { results: Array<(
-    { __typename?: 'Project' }
-    & Pick<Project, 'id' | 'title' | 'createdAt' | 'isLiked' | 'likesCount' | 'tags' | 'preview' | 'repoLink' | 'siteLink' | 'description' | 'isApproved'>
-    & { author: (
-      { __typename?: 'User' }
-      & Pick<User, 'id'>
-    ) }
-  )> }
-);
+export type ProjectsResponseFragmentFragment = { __typename?: 'ProjectsResponse', nextCursor?: string | null | undefined, prevCursor?: string | null | undefined, totalCount?: number | null | undefined, results: Array<{ __typename?: 'Project', id: string, title: string, createdAt: any, isLiked?: boolean | null | undefined, likesCount: number, tags: Array<string>, preview: string, repoLink: string, siteLink: string, description: string, isApproved: boolean, author: { __typename?: 'User', id: string } }> };
 
 export type CreateUserProjectMutationVariables = Exact<{
-  input?: Maybe<CreateProjectInput>;
+  input?: InputMaybe<CreateProjectInput>;
 }>;
 
 
-export type CreateUserProjectMutation = (
-  { __typename?: 'Mutation' }
-  & { createProject?: Maybe<(
-    { __typename?: 'Project' }
-    & Pick<Project, 'id' | 'title' | 'preview' | 'description' | 'createdAt' | 'siteLink' | 'repoLink' | 'isApproved'>
-    & { likes: Array<(
-      { __typename?: 'User' }
-      & Pick<User, 'id' | 'name'>
-    )> }
-  )> }
-);
+export type CreateUserProjectMutation = { __typename?: 'Mutation', createProject?: { __typename?: 'Project', id: string, title: string, preview: string, description: string, createdAt: any, siteLink: string, repoLink: string, isApproved: boolean, likes: Array<{ __typename?: 'User', id: string, name: string }> } | null | undefined };
 
 export type GetAllProjectsQueryVariables = Exact<{
-  cursor?: Maybe<Scalars['String']>;
+  cursor?: InputMaybe<Scalars['String']>;
 }>;
 
 
-export type GetAllProjectsQuery = (
-  { __typename?: 'Query' }
-  & { projects: (
-    { __typename?: 'ProjectsResponse' }
-    & ProjectsResponseFragmentFragment
-  ) }
-);
+export type GetAllProjectsQuery = { __typename?: 'Query', projects: { __typename?: 'ProjectsResponse', nextCursor?: string | null | undefined, prevCursor?: string | null | undefined, totalCount?: number | null | undefined, results: Array<{ __typename?: 'Project', id: string, title: string, createdAt: any, isLiked?: boolean | null | undefined, likesCount: number, tags: Array<string>, preview: string, repoLink: string, siteLink: string, description: string, isApproved: boolean, author: { __typename?: 'User', id: string } }> } };
 
 export type LoginUserMutationVariables = Exact<{
   email: Scalars['String'];
@@ -261,23 +233,14 @@ export type LoginUserMutationVariables = Exact<{
 }>;
 
 
-export type LoginUserMutation = (
-  { __typename?: 'Mutation' }
-  & Pick<Mutation, 'login'>
-);
+export type LoginUserMutation = { __typename?: 'Mutation', login: any };
 
 export type GetMyProjectsQueryVariables = Exact<{
-  cursor?: Maybe<Scalars['String']>;
+  cursor?: InputMaybe<Scalars['String']>;
 }>;
 
 
-export type GetMyProjectsQuery = (
-  { __typename?: 'Query' }
-  & { projects: (
-    { __typename?: 'ProjectsResponse' }
-    & ProjectsResponseFragmentFragment
-  ) }
-);
+export type GetMyProjectsQuery = { __typename?: 'Query', projects: { __typename?: 'ProjectsResponse', nextCursor?: string | null | undefined, prevCursor?: string | null | undefined, totalCount?: number | null | undefined, results: Array<{ __typename?: 'Project', id: string, title: string, createdAt: any, isLiked?: boolean | null | undefined, likesCount: number, tags: Array<string>, preview: string, repoLink: string, siteLink: string, description: string, isApproved: boolean, author: { __typename?: 'User', id: string } }> } };
 
 export type RegisterUserMutationVariables = Exact<{
   email: Scalars['String'];
@@ -286,10 +249,7 @@ export type RegisterUserMutationVariables = Exact<{
 }>;
 
 
-export type RegisterUserMutation = (
-  { __typename?: 'Mutation' }
-  & Pick<Mutation, 'signup'>
-);
+export type RegisterUserMutation = { __typename?: 'Mutation', signup: any };
 
 export const ProjectsResponseFragmentFragmentDoc = gql`
     fragment ProjectsResponseFragment on ProjectsResponse {
