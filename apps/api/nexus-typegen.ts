@@ -3,7 +3,7 @@
  * Do not make changes to this file directly
  */
 
-
+import type * as PrismaClient from ".prisma/client"
 import type { Context } from "./src/context/index"
 import type { core } from "nexus"
 declare global {
@@ -69,7 +69,7 @@ export interface NexusGenInputs {
 
 export interface NexusGenEnums {
   ProjectAction: "DISLIKE" | "LIKE"
-  Role: "ADMIN" | "USER"
+  Role: PrismaClient.Role
 }
 
 export interface NexusGenScalars {
@@ -84,18 +84,7 @@ export interface NexusGenScalars {
 
 export interface NexusGenObjects {
   Mutation: {};
-  Project: { // root type
-    createdAt: NexusGenScalars['DateTime']; // DateTime!
-    description: string; // String!
-    id: string; // ID!
-    isApproved: boolean; // Boolean!
-    likesCount: number; // Int!
-    preview: string; // String!
-    repoLink: string; // String!
-    siteLink: string; // String!
-    tags: string[]; // [String!]!
-    title: string; // String!
-  }
+  Project: PrismaClient.Project;
   ProjectsResponse: { // root type
     nextCursor?: string | null; // String
     prevCursor?: string | null; // String
@@ -103,17 +92,7 @@ export interface NexusGenObjects {
     totalCount?: number | null; // Int
   }
   Query: {};
-  User: { // root type
-    avatar?: string | null; // String
-    discord?: string | null; // String
-    email: string; // String!
-    github?: string | null; // String
-    id: string; // ID!
-    name: string; // String!
-    projects?: NexusGenRootTypes['Project'][] | null; // [Project!]
-    projectsLiked?: NexusGenRootTypes['Project'][] | null; // [Project!]
-    role: NexusGenEnums['Role']; // Role!
-  }
+  User: PrismaClient.User;
 }
 
 export interface NexusGenInterfaces {

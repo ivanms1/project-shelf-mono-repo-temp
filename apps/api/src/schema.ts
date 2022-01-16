@@ -6,11 +6,12 @@ import * as types from './graphql';
 export const schema = makeSchema({
   types,
   outputs: {
-    typegen: join(__dirname, '..', 'nexus-typegen.ts'),
-    schema: join(__dirname, '..', 'schema.graphql'),
-  },
-  contextType: {
-    module: join(__dirname, './context/index.ts'),
-    export: 'Context',
+    typegen: join(
+      process.cwd(),
+      'node_modules',
+      '@types',
+      'nexus-typegen',
+      'index.d.ts'
+    ),
   },
 });

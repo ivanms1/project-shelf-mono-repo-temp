@@ -1,6 +1,0 @@
-query GetUserSubmit($id: ID!) {
-  user: getUser(id: $id) {
-    name
-    email
-  }
-}

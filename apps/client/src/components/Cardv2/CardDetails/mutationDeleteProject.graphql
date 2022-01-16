@@ -1,3 +1,0 @@
-mutation DeleteProject($projectId: ID!) {
-  deleteProject(id: $projectId)
-}
