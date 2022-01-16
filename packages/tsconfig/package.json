@@ -6,6 +6,8 @@
   "files": [
     "base.json",
     "nextjs.json",
+    "node12.json",
+    "node14.json",
     "react-library.json"
   ]
 }
